@@ -93,7 +93,7 @@ const config = {
             type: "docSidebar",
             sidebarId: "tutorialSidebar",
             position: "left",
-            label: "Tutorial",
+            label: "Docs",
           },
           // Removed blog link to avoid broken link warnings (re-enable if a blog is added)
           // { to: "/blog/", label: "Blog", position: "left" },

@@ -31,7 +31,7 @@
 
 /* Resize images placed in Markdown to 50% of the container width */
 .markdown img {
-  width: 50%;
+  width: 30%;
   height: auto;
   display: block; /* center the image horizontally */
   margin: 1rem auto;
