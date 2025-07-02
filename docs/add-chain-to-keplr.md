@@ -5,9 +5,9 @@ sidebar_position: 2
 
 # Connecting Keplr Wallet
 
-> **Audience**: New users who want to interact with the Twilight exchange on Nyks test‑net.
+> **Audience**: New users who want to interact with the Twilight.
 >
-> **Goal**: Install Keplr, add _Twilight Testnet_ to Keplr, and fund the wallet with NYKS test tokens via the faucet.
+> **Goal**: Install Keplr, add _Twilight Testnet_ to Keplr, and fund the wallet with test tokens using faucet.
 
 ---
 
@@ -23,7 +23,7 @@ sidebar_position: 2
 
 ---
 
-## 2 Connect Keplr from the Twilight front‑end
+## 2 Connect Keplr from the Twilight frontend
 
 1. Navigate to **[https://frontend.twilight.rest](https://frontend.twilight.rest)**.
 2. Click **Connect Wallet** (top‑right).
@@ -36,15 +36,15 @@ sidebar_position: 2
 
 ![Enable Twilight Chain](/images/keplr-approve-chain1.png)
 
-> After approval Keplr automatically switches to _Twilight Chain_.
+> After approval Keplr automatically switches to _Twilight Testnet chain_.
 
 ---
 
 ## 3 Verify & manage chains in Keplr
 
 1. Open the Keplr panel (click the extension icon).
-2. Click the **gear icon ⚙︎ → Settings**.
-3. Select **Add & Remove Chain**.
+2. Click the **hamburger icon ☰**.
+3. Select **Add/Remove Chain**.
 4. In the search field type **“Twilight Testnet”**.
 5. Ensure the radio button next to _Twilight Testnet_ is **checked** → click **Click**.
 

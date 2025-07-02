@@ -7,15 +7,25 @@ sidebar_position: 1
 
 # Twilight User Guide
 
-Welcome to the official user documentation for the **Twilight** — a privacy-preserving, inverse perpetual DEX designed for BTC trading on-chain. This guide will help you get started, understand core concepts, and interact confidently with every part of the protocol.
+Welcome to the official user documentation for the **Twilight** — a privacy-preserving, inverse perpetual DEX designed for BTC trading on-chain. This guide is designed to help you understand the platform’s core features and navigate its key functionalities.
 
-Twilight brings together cutting-edge cryptography and decentralized infrastructure to offer private, secure, and transparent BTC trading with composable liquidity.
+Twilight combines modern cryptography with decentralized infrastructure to enable secure, private, and transparent BTC trading backed by composable on-chain liquidity.
 
----
+<!-- ## 📚 Documentation Overview
+
+This comprehensive guide is designed to help you navigate the Twilight ecosystem, from basic operations to advanced trading strategies. Our documentation provides:
+
+> 💡 **For New Users**: Step-by-step guides to help you get started
+>
+> 🔄 **For Active Traders**: Detailed instructions for trading
+>
+> 🏦 **For Liquidity Providers**: Instructions for lending operations and yield generation
+
+--- -->
 
 ## 📚 What You’ll Find in This Guide
 
-Whether you're just getting started or exploring advanced strategies, this documentation is structured to support every stage of your journey:
+<!-- Whether you're just getting started or exploring advanced strategies, this documentation is structured to support every stage of your journey: -->
 
 ### 🧩 Getting Started
 
@@ -28,13 +38,13 @@ Whether you're just getting started or exploring advanced strategies, this docum
 
 ### 💸 Earn by Providing Liquidity
 
-- **[Lending Pool](lend-to-twilight-pool.md)** — Lend SATS to the settlement pool and earn protocol rewards from liquidations, funding rates, and fees.
+- **[Lending Pool](lend-to-twilight-pool.md)** — Lend BTC to the settlement pool and earn protocol rewards from liquidations, funding rates, and fees.
 
 ---
 
 ## 🧪 Testnet Access
 
-Twilight is currently live on the **Testnet**. You can use the [faucet](https://frontend.twilight.rest/faucet) to acquire NYKS (for gas fees) and SATS (for trading and lending). All operations in these guides assume you're connected to the Testnet.
+Twilight is currently live on the **Testnet**. You can use the [faucet](https://frontend.twilight.rest/faucet) to acquire NYKS (for gas fees) and BTC (for trading and lending). All operations in these guides assume you're connected to the Testnet.
 
 ---
 
@@ -44,7 +54,7 @@ If you encounter issues, bugs, or unexpected behavior:
 
 - Check if your wallet is properly connected and funded.
 - Review the relevant guide section.
-- Reach out to the community or developer team via [Discord](#) or [Telegram](#).
+<!-- - Reach out to the community or developer team via [Discord](#) or [Telegram](#). -->
 
 ---
 
@@ -52,7 +62,7 @@ If you encounter issues, bugs, or unexpected behavior:
 
 Twilight is actively under development. Features, interfaces, and flows may change — this documentation will evolve with the protocol.
 
-We encourage feedback and contributions to help improve these resources.
+<!-- We encourage feedback and contributions to help improve these resources.    -->
 
 ---
 
