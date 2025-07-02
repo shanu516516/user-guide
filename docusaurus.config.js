@@ -100,7 +100,7 @@ const config = {
           // { to: "/blog/", label: "Blog", position: "left" },
           {
             href: "https://frontend.twilight.rest",
-            label: "Twilight Frontend",
+            label: "Twilight App",
             position: "right",
           },
           {

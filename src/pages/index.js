@@ -25,7 +25,7 @@ function HomepageHeader() {
     </header>
   );
 }
-import DocIndexContent from "@site/docs/index.md";
+import DocIndexContent from "@site/index.md";
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
@@ -35,12 +35,11 @@ export default function Home() {
       description="Description will go into a meta tag in <head />"
     >
       {/* <HomepageHeader /> */}
+
       <main className="container">
         <DocIndexContent />
       </main>
-      <main>
-        <HomepageFeatures />
-      </main>
+      <main>{/* <HomepageFeatures /> */}</main>
     </Layout>
   );
 }
