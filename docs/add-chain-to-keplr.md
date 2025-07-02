@@ -65,7 +65,7 @@ Your Keplr wallet is now ready to sign transactions.
 6. Approve the transaction in your Keplr wallet when prompted.
 7. Once registration is complete, click **Get BTC Tokens** to receive your testnet BTC.
 
-![Faucet Request](/images/nyks-faucet.png)
+<img src="/images/nyks-faucet.png" alt="Faucet Request" class="enlarge-img" />
 
 8. Navigate to the [**Wallet**](https://frontend.twilight.rest/wallet) page to view your BTC balance.  
    The tokens will appear under your **Funding Account**.
