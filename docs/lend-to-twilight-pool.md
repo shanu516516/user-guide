@@ -14,7 +14,7 @@
 
 ## Subaccount Funding
 
-> *Creating a separate Subaccount for each lending operation is highly recommended, as accounts with active orders cannot be used.*
+> _Creating a separate Subaccount for each lending operation is highly recommended, as accounts with active orders cannot be used._
 
 Follow the instructions described [here](https://twilight-pool.vercel.app/guides/dex-operations.html) to create and fund Subaccounts specifically for lending.
 
@@ -24,22 +24,23 @@ Follow the instructions described [here](https://twilight-pool.vercel.app/guides
 
 1. Click on **"Lend"** inside the **Trade** tab.
 
-   ![Lend Option](images/Screenshot_2024-05-08_at_10.51.00_PM.jpg)
+   ![Lend Option](/images/26.jpg)
 
 2. Click on the **"Lend"** button on the following page.
 
-   ![Lend Page](images/lend2.jpeg)
+   ![Lend Page](/images/35.jpeg)
 
 3. On the Lend sub-page:
+
    - Select the desired Subaccount from the **“Account From”** dropdown menu.
    - Enter the amount of BTC to lend.
    - Click on the **"Deposit"** button.
 
-   ![Lend Form](images/Screenshot_2024-05-08_at_11.27.33_PM.jpg)
+   ![Lend Form](/images/27.jpg)
 
 4. The lent amount will appear under the **"Loan"** section upon successful transaction.
 
-   ![Loan Section](images/Screenshot_2024-05-08_at_11.34.44_PM.png)
+   ![Loan Section](/images/28.jpg)
 
 ---
 
