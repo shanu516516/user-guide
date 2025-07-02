@@ -3,7 +3,7 @@ name: Twilight-Project User Guide Deployment
 on:
   push:
     branches:
-      - docs # or your default branch
+      - main # or your default branch
 
 jobs:
   deploy:
