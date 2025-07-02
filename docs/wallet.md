@@ -5,13 +5,13 @@ sidebar_position: 3
 
 # Twilight – Wallet Guide
 
-This guide explains how to manage user funds via the **Wallet** section of the [Twilight frontend](https://frontend.twilight.rest/wallet). The wallet interface supports fund transfers across **Funding** and **Trading** accounts, enabling users to interact with the Inverse BTC perpetual exchange in a private and composable manner.
+This guide explains how to manage user funds in the **[Wallet](https://frontend.twilight.rest/wallet)** section of the Twilight frontend. The wallet interface supports fund transfers across **Funding** and **Trading** accounts, enabling users to interact with the Inverse BTC perpetual exchange in a private and secure manner.
 
 ---
 
 ## Overview
 
-- **Funding Account**: A standard Cosmos (Twilight Testnet chain) account holding SATS and NYKS tokens. This account is visible on-chain and used for receiving assets (e.g., via faucet).
+- **Funding Account**: A standard Twilight Testnet chain account. This account is visible on-chain and used for receiving assets (e.g., via faucet).
 - **Trading Account (Dark Account)**: A privacy-preserving account containing encrypted balances. These are required to open private perpetual positions.
 
 All operations are executed on the Twilight testnet and can be viewed on the [Twilight Testnet Explorer](https://explorer.twilight.rest/nyks), though the data is encrypted.
@@ -23,8 +23,12 @@ All operations are executed on the Twilight testnet and can be viewed on the [Tw
 Before using the wallet functions:
 
 - Connect your **Keplr** wallet with the [frontend](/docs/add-chain-to-keplr.md).
-- Obtain **NYKS** and **SATS** testnet tokens via the [Twilight Faucet](https://twilight-pool.vercel.app/faucet).
-- Ensure your **Funding Account** has SATS available for transfer.
+- **NYKS Tokens**: Required for transaction fees on the Twilight Testnet
+- **BTC Balance**: Available in your Funding Account
+
+> 💡 New users can:
+>
+> - Obtain NYKS and BTC tokens from the [Faucet](https://frontend.twilight.rest/faucet)
 
 ---
 
@@ -32,13 +36,13 @@ Before using the wallet functions:
 
 ### 1. Funding Account
 
-- Your public Cosmos account on the Twilight Testnet chain.
-- Initial SATS/NYKS tokens are received here via faucet.
+- Your public account on the Twilight Testnet chain.
+- Initial BTC/NYKS tokens are received here.
 - Supports transfers to Trading (dark) accounts.
 
 ### 2. Trading Accounts (Dark Accounts)
 
-- Encrypted accounts used to interact with the private exchange.
+- Encrypted accounts used to interact with the **Twilight**.
 - Each trade must be performed from a dedicated trading account.
 - Users can create multiple dark accounts as needed.
 
@@ -61,7 +65,7 @@ Transfer funds from a Funding Account to a Trading (dark) Account.
 
    - To create a new account, select **"Create new account"** from the dropdown menu
      ![Create New Account](/images/wallet/create-new-account.png)
-     This will create a new account with default tag.
+     This will create a new dark account with default tag.
    - For custom tags and subaccount management, see the [Create Subaccounts](#create-subaccounts) section
 
 3. Enter the amount to transfer.  
@@ -70,9 +74,9 @@ Transfer funds from a Funding Account to a Trading (dark) Account.
 4. Click **Transfer** and sign the transaction.  
    ![Sign transaction](/images/wallet/transfer-sign.png)\_
 
-5. The selected Trading Account will be updated with the transferred SATS balance.
+5. The selected Trading Account will be updated with the transferred BTC balance.
 6. You can view your transaction details in the **Account History** section
-   ![Account History](/images/wallet/account-history.png)
+   <img src="/images/wallet/account-history.png" alt="Account History" class="enlarge-img" />
 
 > ⚠️ A Trading Account must have zero balance before receiving a new transfer.
 
@@ -84,7 +88,7 @@ Move funds from a Trading Account (dark account) back to the public Funding Acco
 
 **Steps:**
 
-1. Click the Transfer ⇌ icon next to the Trading Account you wish to withdraw from.
+1. Click the Transfer ⇌ icon next to the Trading Account.
 
 2. In the transfer dialog:
    - Set "Trading" as the source.
@@ -94,18 +98,13 @@ Move funds from a Trading Account (dark account) back to the public Funding Acco
 3. The full balance of the selected Trading Account will be automatically populated for transfer.
 4. Click Transfer, then review and sign the transaction.
    ![Sign transfer to funding](/images/wallet/sign-trading-to-funding.png)
-5. Upon confirmation, the transferred SATS amount will be reflected in your Funding Account.
+5. Upon confirmation, the transferred BTC amount will be reflected in your Funding Account.
 
 ---
 
 ### 🔁 3. Trading → Trading
 
 Transfer funds between two Trading (dark) Accounts.
-
-**Notes:**
-
-- Only **full-balance transfers** are supported at this time.
-- This operation is commonly used to move funds from a settled position account into a new Trading Account for reuse.
 
 **Steps:**
 
@@ -123,32 +122,30 @@ Transfer funds between two Trading (dark) Accounts.
 5. Review the data and Click **Transfer**.
 6. Upon confirmation, the full balance will appear in the destination Trading Account.
 
+**Notes:**
+
+- Only **full-balance transfers** are supported.
+- Typically used to move funds from a settled position into a fresh Trading Account for reuse.
+- Each Trading Account supports only a single order. After an order is executed, you must transfer the balance to a new Trading Account before placing another order. This maintains clear account tracking and settlements.
+
+**Reminder:**
+
+Set up [multiple Trading Accounts](#create-subaccounts) in advance if you plan to place consecutive orders.
+
 ---
-
-## Additional Information
-
-- All transactions are executed on the Twilight testnet and are **fully encrypted**.
-- Transactions can be viewed on the [Twilight Explorer](https://explorer.nyks.twilight.rest), but amounts and account details are obfuscated for privacy.
-
----
-
-## Coming Next
-
-- Trade Guide: Opening and closing positions
-- Lend Guide: Participating in the Twilight lending pool
 
 ## Create Subaccounts
 
 ---
 
-_It is recommended to create a separate Subaccount for each trade, as accounts with active positions become locked and cannot be reused until the position is closed. While exchange operations can also be performed using the default "Trading Account," using dedicated Subaccounts provides better flexibility and fund management._
+_It is recommended to create a separate Subaccount for each trade, as accounts with active positions become locked and cannot be reused until the position is closed. While order interactions can also be performed using the default "Trading Account," using dedicated Subaccounts provides better flexibility and fund management._
 
 1. Navigate to the [Homepage](https://frontend.twilight.rest/).
-2. Connect your **Keplr** wallet by clicking the wallet icon in the top-right corner of the navigation bar.
+2. Connect your **Keplr** wallet by clicking the **Connect Wallet** in the top-right corner of the navigation bar.
 3. Once connected, open the _Trading Account_ dropdown and select **"Manage Subaccounts"**.  
    ![Manage Subaccounts Menu](/images/wallet/manage-subaccount.png)
 
-4. In the Subaccount Management view, click on **"New"** to create a new Subaccount.
+4. In the Subaccount Management view, click on **"New\*"** to create a new Subaccount.
 
    ![New Subaccount Dialog](/images/wallet/create-new-account-dialog.png)
 
@@ -156,4 +153,10 @@ _It is recommended to create a separate Subaccount for each trade, as accounts w
 
    ![Enter Subaccount Name](/images/wallet/new-tag-account.png)
 
-Once the Subaccount is created, it will be available for use in the [Funding → Trading](#-1-funding--trading) transfer flow.
+Once the Subaccount is created, it will be available for use in the [Funding → Trading](#-1-funding--trading) and [Trading → Trading](#-3-trading--trading) transfer flow.
+
+---
+
+## Additional Information
+
+- Transactions can be viewed on the [Twilight Explorer](https://explorer.twilight.rest/nyks), but amounts and account details are obfuscated for privacy.

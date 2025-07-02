@@ -3,12 +3,13 @@ title: Trade on Twilight
 sidebar_position: 4
 ---
 
-# How to Trade on the Twilight DEX
+# How to Trade on Twilight
 
-Twilight is a privacy-preserving inverse perpetual DEX that enables users to trade BTC with leverage while keeping their positions confidential.  
-All trades are performed using encrypted subaccounts to ensure private settlement and execution.
+Twilight is a privacy-preserving inverse perpetual protocol that allows users to trade BTC with leverage while keeping their positions confidential. All trades are executed through encrypted subaccounts, ensuring private settlement and execution.
 
-**Video Tutorial:** [Watch Here](https://drive.google.com/file/d/1sp7TFu8ovId34boT6QxlMjyWqGVu_SpM/view)
+<!-- **Video Tutorial:**
+
+<iframe src="https://drive.google.com/file/d/1sp7TFu8ovId34boT6QxlMjyWqGVu_SpM/preview" width="100%" height="480" allow="autoplay"></iframe> -->
 
 ---
 
@@ -17,12 +18,12 @@ All trades are performed using encrypted subaccounts to ensure private settlemen
 Before trading on the DEX, ensure you have:
 
 - **NYKS Tokens**: Required for transaction fees on the Twilight Testnet
-- **SATS Balance**: Available in your Trading Account (Subaccount) for trading
+- **BTC Balance**: Available in your Trading Account (Subaccount) for trading
 - **Subaccount**: A dedicated Trading Account for trading operations
 
 > 💡 New users can:
 >
-> - Obtain NYKS and SATS tokens from the [Faucet](https://frontend.twilight.rest/faucet)
+> - Obtain NYKS tokens and BTC balance from the [Faucet](https://frontend.twilight.rest/faucet)
 > - Set up Trading Accounts using the [Wallet Guide](wallet.md)
 
 > ⚠️ **Note**: Currently, only Testnet trading is supported. All operations are performed on the Twilight Testnet using test tokens.
@@ -39,7 +40,7 @@ Before trading on the DEX, ensure you have:
 ## Connect Your Wallet
 
 Before initiating any trading activity, ensure that your **Keplr wallet** is connected to the Twilight frontend.  
-Click the wallet icon in the top-right corner of the interface and approve the connection request.
+Click on the **Connect Wallet** in the top-right corner of the interface and approve the connection request.
 
 You must be connected for Subaccounts, balances, and trading actions to function correctly.
 
@@ -67,19 +68,19 @@ You must be connected for Subaccounts, balances, and trading actions to function
    > ⚠️ **Important**:
    >
    > - Only full account balance orders are supported
-   > - For trading with different amounts, create a new Trading Account via the [Wallet section](#wallet)
+   > - For trading with different amounts, create a new Trading Account in the [Wallet section](https://frontend.twilight.rest/wallet)
 
 ### Step 3: Execute the Trade
 
 1. Click either **Buy** or **Sell** to create your order
-2. Confirm the transaction when prompted
+2. A notification will appear to confirm your order. The on-chain transaction can be viewed using <u>**Explorer Link**</u>
    ![Order Confirmation](/images/21.png)
 
 ### Step 4: Monitor Your Position
 
 - Track your open positions in the **Details** panel under **My Trades**
-- View order status, P&L, and other trade information
-  ![Position Details](/images/order-info.png)
+- View order status, uPnL, and other informations about open positions
+  <img src="/images/order-info.png" alt="Position Details" class="enlarge-img" />
 
 ---
 
@@ -87,9 +88,8 @@ You must be connected for Subaccounts, balances, and trading actions to function
 
 ### Step 1: Access Your Positions
 
-1. Navigate to the **Details** panel on the trading interface
-2. Open the **My Trades** section to view your active positions
-   ![My Trades Panel](/images/order-info.png)
+1. Navigate to the **My Trades** tab on the trading interface
+   <img src="/images/order-info.png" alt="My Trades Panel" class="enlarge-img" />
 
 ### Step 2: Close the Position
 
@@ -100,8 +100,7 @@ You must be connected for Subaccounts, balances, and trading actions to function
 
 ### Step 3: Settlement
 
-- The position will be automatically closed.
-- Any profit or loss (PnL) will be settled back to your original Trading Account
+- Any profit or loss (PnL) will be settled back to your same Trading Account
 - You can verify the updated balance in your Trading Account
 
 > 💡 **Note**: The settlement occurs automatically to the same Trading Account that was used to open the position
@@ -133,6 +132,7 @@ Limit orders allow you to specify the price at which you want to buy or sell BTC
 ### Step 3: Place the Order
 
 1. Click either **Buy** or **Sell** to create your limit order
+2. If the limit price meets the mark price condition, the order will be immediately filled as a market order.
 
 ### Step 4: Monitor Your Order
 
@@ -140,7 +140,7 @@ Limit orders allow you to specify the price at which you want to buy or sell BTC
 - The order will remain active until either:
   - It is matched at your specified price
   - You manually cancel it
-    ![Order Status](/images/limit-order-my-trades.png)
+    <img src="/images/limit-order-my-trades.png" alt="Order Status" class="enlarge-img" />
 
 > 📌 You can cancel an open limit order at any time by clicking the **Cancel** button in the My Trades panel.
 
@@ -148,19 +148,30 @@ Limit orders allow you to specify the price at which you want to buy or sell BTC
 >
 > - Only full account balance orders are supported
 > - Ensure sufficient collateral is available in your Trading Account
-> - For trading with different amounts, create a new Trading Account via the [Wallet section](#wallet)
+> - For trading with different amounts, create a new Trading Account via the [Wallet section](https://frontend.twilight.rest/wallet)
 
 ---
 
-For wallet-related operations such as account creation and transfers, please refer to the [Wallet Guide](wallet.md).
+For wallet-related operations such as account creation and transfers, please refer to the [Wallet Guide](/docs/wallet.md).
 
 ---
 
-## Related: The Twilight Settlement Pool
+## Trading Fees
 
-All trades on the Twilight DEX settle against a shared liquidity pool on the Twilight Testnet.  
-This pool is funded by users who lend their SATS (BTC) to earn yield from liquidation fees, trading fees, and funding rates.
+Twilight applies a small fee to each trade executed on the Twilight :
 
-If you're interested in becoming a liquidity provider, see the [Lend to Twilight Pool](lend-to-twilight-pool.md) guide for details.
+- **Maker Fee**: 0.02% — Applied when you add liquidity to the order book (e.g., placing a limit order that is not immediately matched).
+- **Taker Fee**: 0.04% — Applied when you remove liquidity from the order book (e.g., executing a market order or a limit order that is immediately filled).
+
+Fees are deducted automatically from the Trading Account at the time of order execution.
+
+---
+
+## Related: The Twilight Liquidity Pool
+
+All trades on the Twilight protocol, settle against a liquidity pool on the Twilight Testnet.  
+This pool is funded by users who lend their BTC to earn yield from liquidation, trading fees, and funding fees.
+
+If you're interested in becoming a liquidity provider, see the [Lend to Twilight Pool](/docs/lend) guide for details.
 
 ---

@@ -43,41 +43,44 @@ sidebar_position: 2
 ## 3 Verify & manage chains in Keplr
 
 1. Open the Keplr panel (click the extension icon).
-2. Click the **hamburger icon ☰**.
+2. Click the **Menu icon ☰**.
 3. Select **Add/Remove Chain**.
-4. In the search field type **“Twilight Testnet”**.
+4. In the search field type _Twilight Testnet_.
 5. Ensure the radio button next to _Twilight Testnet_ is **checked** → click **Click**.
 
 ![Enable Twilight Chain](/images/keplr-manage-chain.png)
 
-Your Keplr wallet is now ready to sign transactions on Twilight.
+Your Keplr wallet is now ready to sign transactions.
 
 ---
 
-## 4 Fund your wallet with NYKS test tokens
+## 4 Fund your wallet
 
-1. Back on the Twilight site open **[Faucet](https://frontend.twilight.rest/faucet)**.
-2. Click **Connect Wallet** if you are not already connected.
-3. Press **Continue**, make sure your twilight public address in same from wallet
-4. Press **Get NYKS Tokens** to request 100,000 NYKS from the faucet.
-5. Now, press **Register BTC Address** to register randomly generate btc public address. Make sure not to refresh the page
-6. Approve the faucet transaction in Keplr.
-7. Press Get BTC Tokens
+1. Visit the [**Faucet**](https://frontend.twilight.rest/faucet) on the Twilight Frontend site.
+2. Click **Connect Wallet** if your Keplr wallet is not already connected.
+3. Press **Continue** and verify that your connected address matches your Twilight Testnet address.
+4. Click **Get NYKS Tokens** to request 100,000 NYKS from the faucet.
+5. Then, click **Register BTC Address** to generate and register a BTC public key.
+   > ⚠️ Do not refresh the page during this step.
+6. Approve the transaction in your Keplr wallet when prompted.
+7. Once registration is complete, click **Get BTC Tokens** to receive your testnet BTC.
 
-![Faucet Request](/images/nyks-faucet.png)
+![Faucet Request](/images/nyks-faucet.png)
 
-8. Now go to **[Wallet](https://frontend.twilight.rest/wallet)** page to check your BTC tokens. The tokens are reflected in funding account.
+8. Navigate to the [**Wallet**](https://frontend.twilight.rest/wallet) page to view your BTC balance.  
+   The tokens will appear under your **Funding Account**.
 
-> Token transfers are near‑instant; your NYKS balance refreshes in seconds.
+> Transfers are processed almost instantly—your testnet balances should update within a few seconds.
 
 ---
 
+<!--
 ## 5 Next Steps
 
-- Open a **trade ticket** and try a small inverse‑perp position.
+- Open a **trade order** and try a small inverse‑perp position.
 - Provide liquidity with a **lend order** to earn funding fees. for lend order go to **[Lend Page](https://frontend.twilight.rest/lend)**
 
----
+--- -->
 
 ### Troubleshooting
 
@@ -89,4 +92,4 @@ Your Keplr wallet is now ready to sign transactions on Twilight.
 
 ---
 
-© Twilight Labs 2025
+<!-- © Twilight Labs 2025 -->

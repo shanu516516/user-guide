@@ -34,11 +34,11 @@ This comprehensive guide is designed to help you navigate the Twilight ecosystem
 
 ### ⚖️ Trading on Twilight
 
-- **[Trade On Twilight](dex-operations.md)** — Learn how to open and settle market and limit orders using encrypted subaccounts.
+- **[Trade On Twilight](trade.md)** — Learn how to open and settle market and limit orders using encrypted subaccounts.
 
 ### 💸 Earn by Providing Liquidity
 
-- **[Lending Pool](lend-to-twilight-pool.md)** — Lend BTC to the settlement pool and earn protocol rewards from liquidations, funding rates, and fees.
+- **[Lending Pool](lend.md)** — Lend BTC to the settlement pool and earn protocol rewards from liquidations, funding rates, and fees.
 
 ---
 

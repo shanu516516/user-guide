@@ -99,7 +99,12 @@ const config = {
           // Removed blog link to avoid broken link warnings (re-enable if a blog is added)
           // { to: "/blog/", label: "Blog", position: "left" },
           {
-            href: "https://github.com/shanu516516/user-guide",
+            href: "https://frontend.twilight.rest",
+            label: "Twilight Frontend",
+            position: "right",
+          },
+          {
+            href: "https://github.com/twilight-project",
             label: "GitHub",
             position: "right",
           },
@@ -108,46 +113,46 @@ const config = {
       footer: {
         style: "dark",
         links: [
-          {
-            title: "Docs",
-            items: [
-              {
-                label: "DEX Operations",
-                to: "/docs/dex-operations",
-              },
-            ],
-          },
-          {
-            title: "Community",
-            items: [
-              // {
-              //   label: "Stack Overflow",
-              //   href: "https://stackoverflow.com/questions/tagged/docusaurus",
-              // },
-              // {
-              //   label: "Discord",
-              //   href: "https://discordapp.com/invite/docusaurus",
-              // },
-              // {
-              //   label: "X",
-              //   href: "https://x.com/docusaurus",
-              // },
-            ],
-          },
-          {
-            title: "More",
-            items: [
-              // Blog section is currently disabled
-              // {
-              //   label: "Blog",
-              //   to: "/blog/",
-              // },
-              {
-                label: "GitHub",
-                href: "https://github.com/twilight-project",
-              },
-            ],
-          },
+          // {
+          //   title: "Docs",
+          //   items: [
+          //     {
+          //       label: "DEX Operations",
+          //       to: "/docs/dex-operations",
+          //     },
+          //   ],
+          // },
+          // {
+          //   title: "Community",
+          //   items: [
+          //     // {
+          //     //   label: "Stack Overflow",
+          //     //   href: "https://stackoverflow.com/questions/tagged/docusaurus",
+          //     // },
+          //     // {
+          //     //   label: "Discord",
+          //     //   href: "https://discordapp.com/invite/docusaurus",
+          //     // },
+          //     // {
+          //     //   label: "X",
+          //     //   href: "https://x.com/docusaurus",
+          //     // },
+          //   ],
+          // },
+          // {
+          //   title: "More",
+          //   items: [
+          //     // Blog section is currently disabled
+          //     // {
+          //     //   label: "Blog",
+          //     //   to: "/blog/",
+          //     // },
+          //     {
+          //       label: "GitHub",
+          //       href: "https://github.com/twilight-project",
+          //     },
+          //   ],
+          // },
         ],
         copyright: `Copyright © ${new Date().getFullYear()} Twilight`,
       },
