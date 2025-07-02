@@ -1,0 +1,23 @@
+name: Test Docusaurus build
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm     # switch to "yarn" or "pnpm" if you use those
+
+      - name: Install dependencies
+        run: npm ci      # or: yarn install --frozen-lockfile
+
+      - name: Test build
+        run: npm run build   # yarn build / pnpm run build
