@@ -17,10 +17,7 @@ function HomepageHeader() {
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/dex-operations"
-          >
+          <Link className="button button--secondary button--lg" to="/docs/">
             Start with DEX Operations
           </Link>
         </div>

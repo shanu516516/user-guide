@@ -1,15 +1,21 @@
-# Lending Guide for the Twilight Liquidity Pool
+---
+title: Lending Pool
+sidebar_position: 5
+---
+
+# How to Lend for the Twilight Liquidity Pool
 
 ## About the Twilight Pool
 
 The Twilight Pool acts as the central liquidity layer for the Twilight perpetual exchange. When traders open and settle positions, they interact with this pool — making it the counterparty for all leveraged trades.
 
 The pool earns protocol revenue from:
+
 - **Liquidations** of undercollateralized positions
 - **Exchange trading fees**
 - A share of the **funding rate** on open positions
 
-By lending SATS (BTC) into the pool, liquidity providers contribute to the exchange's trading depth while earning a portion of this revenue. 
+By lending SATS (BTC) into the pool, liquidity providers contribute to the exchange's trading depth while earning a portion of this revenue.
 
 Twilight enables BTC holders to earn competitive on-chain yield through a secure and privacy-preserving lending mechanism.
 
@@ -26,6 +32,7 @@ Before lending SATS to the Twilight Pool, ensure you have:
 - **Subaccount**: A dedicated Trading Account for lending operations
 
 > 💡 New users can:
+>
 > - Obtain NYKS and SATS tokens from the [Faucet](https://frontend.twilight.rest/faucet)
 > - Set up Trading Accounts in the [Create Subaccounts](#create-subaccounts) section
 
@@ -55,7 +62,7 @@ Follow the steps below to open the Lend interface and execute your lending trans
 1. Click the **"Lend"** tab in the top navigation bar. This opens the lending dashboard.  
    ![Lend Option](/images/lend-dashboard.png)
 
-3. On the Lend page, click the **"Lend"** button to open a lend form.  
+2. On the Lend page, click the **"Lend"** button to open a lend form.  
    ![Lend Page](/images/28.jpg)
 
 ---
@@ -63,6 +70,7 @@ Follow the steps below to open the Lend interface and execute your lending trans
 ### Step 2: Execute the Lending Transaction
 
 1. On the lending form:
+
    - Select the Subaccount you wish to lend from using the **"Account From"** dropdown.
    - Enter the amount of SATS to lend.
    - Click **"Deposit"** to initiate the transaction.  
@@ -74,7 +82,6 @@ Follow the steps below to open the Lend interface and execute your lending trans
    ![Loan Section](/images/loan.png)
 
 > ✅ Your funds are now earning yield in the Twilight Pool.
-
 
 ---
 
@@ -94,5 +101,3 @@ If you wish to withdraw your lent SATS from the Twilight Pool, follow the steps 
 Once confirmed, your SATS will be returned to the same Subaccount from which they were lent. The updated balance will be visible on the wallet page.
 
 > 🔁 You can now reuse these funds to open new trades or repeat the lending process.
-
-

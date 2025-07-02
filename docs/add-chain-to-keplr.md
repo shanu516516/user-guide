@@ -1,3 +1,8 @@
+---
+title: Connecting Keplr Wallet
+sidebar_position: 2
+---
+
 # Connecting Keplr Wallet
 
 > **Audience**: New users who want to interact with the Twilight exchange on Nyks test‑net.
