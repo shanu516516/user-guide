@@ -1,4 +1,9 @@
-# DEX Operations
+# How to Trade on the Twilight DEX
+
+Twilight is a privacy-preserving inverse perpetual DEX that enables users to trade BTC with leverage while keeping their positions confidential.  
+All trades are performed using encrypted subaccounts to ensure private settlement and execution.
+
+
 
 **Video Tutorial:** [Watch Here](https://drive.google.com/file/d/1sp7TFu8ovId34boT6QxlMjyWqGVu_SpM/view)
 
@@ -6,103 +11,137 @@
 
 ## Prerequisites
 
-1. Completed the [BTC deposit guide](https://twilight-pool.vercel.app).
-2. Have Nyks tokens in your wallet.
-3. Deposited BTC into your Twilight wallet.
+Before trading on the DEX, ensure you have:
+
+- **NYKS Tokens**: Required for transaction fees on the Twilight Testnet
+- **SATS Balance**: Available in your Trading Account (Subaccount) for trading
+- **Subaccount**: A dedicated Trading Account for trading operations
+
+> 💡 New users can:
+> - Obtain NYKS and SATS tokens from the [Faucet](https://frontend.twilight.rest/faucet)
+> - Set up Trading Accounts using the [Wallet Guide](wallet.md)
+
+> ⚠️ **Note**: Currently, only Testnet trading is supported. All operations are performed on the Twilight Testnet using test tokens.
+---
+
+## Subaccount Management
+
+> ⚠️ **Important**: Each Subaccount becomes locked when a position is open.  
+> To maintain flexibility and trade efficiently, create a separate Subaccount for each position.
 
 ---
 
-## Create Subaccounts
+## Connect Your Wallet
 
-Creating separate Subaccounts for each trade is highly recommended, as active orders render the account unusable. Note that exchange operations can also be conducted on the “Trading Account”.
+Before initiating any trading activity, ensure that your **Keplr wallet** is connected to the Twilight frontend.  
+Click the wallet icon in the top-right corner of the interface and approve the connection request.
 
-1. Connect your Keplr wallet from the top-right corner of the navigation bar.
-2. Once connected, select **Manage Subaccounts** from the Trading Account dropdown menu.
-
-   ![Manage Subaccounts Screenshot](/images/9.png)
-
-3. In the accounts dialog, click on **New** to create a new Subaccount.
-
-   ![New Subaccount Screenshot](/images/10.png)
-
-4. Enter a name for your Subaccount and click **Create**.
-   ![Create Subaccount Screenshot](/images/11.png)
-
-Once the new Subaccount is created, you can now transfer BTC into it.
-
-![Create Subaccount Screenshot](/images/12.png)
-
----
-
-## Funding to Trading Transfer
-
-The Subaccount can now be funded with SATS using the Funding → Trading account transfer menu:
-
-1. Hover over the **Trade** menu on the navigation bar and click on **Wallet**.
-   ![Wallet Page Screenshot](/images/13.png)
-2. Under the **Funding** section, click the highlighted button to open the transfer dialog.
-   ![Funding Transfer Dialog Screenshot](/images/14.png)
-3. In the dialog, select your Subaccount from the **Account To** dropdown.
-   ![Select Subaccount Screenshot](/images/15.png)
-4. Enter the amount of BTC to transfer and click **Transfer**.
-5. Approve the request to confirm the transaction.
-   ![Transfer Approval Screenshot](/images/16.png)
-
-After approval, the transferred amount will be reflected in your Subaccount.
-
-![Updated Balance Screenshot](/images/17.png)
+You must be connected for Subaccounts, balances, and trading actions to function correctly.
 
 ---
 
 ## Opening a Market Order
 
-1. On the home page, select an account with a balance (e.g., "Subaccount 1").
-   ![Select Subaccount Screenshot](/images/18.png)
-2. Place an order in the **Orders** panel (typically on the right side).
-   ![Order Panel Screenshot](/images/19.png)
-3. Enter the amount in BTC and set the leverage.
-   ![Set Amount & Leverage Screenshot](/images/20.png)
-4. Select **Buy** or **Sell** to create the order. A notification will appear upon success.
-   ![Order Success Notification Screenshot](/images/21.png)
-5. View your open orders in the **Orderbook** panel under **My Trades**.
-   ![My Trades Screenshot](/images/22.png)
+### Step 1: Access the Trading Interface
+1. Navigate to the **Trade** tab in the top navigation bar
+2. Select your Trading Account from the dropdown menu in the top-right corner
+   ![Trading Account Selection](/images/18.png)
+
+### Step 2: Configure Your Order
+1. Locate the **Orders** panel on the right side of the interface
+   ![Orders Panel](/images/19.png)
+
+2. Set your trading parameters:
+   - **Amount**: The full balance of your selected account will be used
+   - **Leverage**: Choose your desired leverage multiplier
+   ![Trading Parameters](/images/20.png)
+
+   > ⚠️ **Important**: 
+   > - Only full account balance orders are supported
+   > - For trading with different amounts, create a new Trading Account via the [Wallet section](#wallet)
+
+### Step 3: Execute the Trade
+1. Click either **Buy** or **Sell** to create your order
+2. Confirm the transaction when prompted
+   ![Order Confirmation](/images/21.png)
+
+### Step 4: Monitor Your Position
+- Track your open positions in the **Details** panel under **My Trades**
+- View order status, P&L, and other trade information
+  ![Position Details](/images/order-info.png)
 
 ---
 
 ## Closing a Market Order
 
-1. Go to the **Orderbook** panel on the home page and open **My Trades**.
-   ![My Trades Panel Screenshot](/images/22.png)
-2. Click **Close** next to the order you wish to close. A notification confirms the closure.
-   ![Close Order Notification Screenshot](/images/23.png)
+### Step 1: Access Your Positions
+1. Navigate to the **Details** panel on the trading interface
+2. Open the **My Trades** section to view your active positions
+   ![My Trades Panel](/images/order-info.png)
+
+### Step 2: Close the Position
+1. Locate the position you want to close
+2. Click the **Close** button next to the corresponding position
+3. A notification will appear to confirm that your position has been closed
+   ![Position Closing](/images/close-order.png)
+
+### Step 3: Settlement
+- The position will be automatically closed.
+- Any profit or loss (PnL) will be settled back to your original Trading Account
+- You can verify the updated balance in your Trading Account
+
+> 💡 **Note**: The settlement occurs automatically to the same Trading Account that was used to open the position
 
 ---
 
-## Trading to Trading Transfer
+## Placing a Limit Order
 
-This operation allows private BTC transfers among Subaccounts:
+Limit orders allow you to specify the price at which you want to buy or sell BTC on the Twilight exchange. The order will remain open until it is either filled at your target price or cancelled.
 
-1. Create a new Subaccount for the BTC recipient.
-2. Navigate to **Wallet** under the **Trade** menu.
-   ![Wallet Screenshot](/images/13.png)
-3. In the **Trading** section, click the button to open the transfer dialog.
-   ![Trading Transfer Dialog Screenshot](/images/24.png)
-4. Select the source and destination Subaccounts, enter the transfer amount.
-   ![Select Accounts Screenshot](/images/25.jpg)
-5. Confirm the transfer. The amount will reflect in the destination Subaccount, and transaction details appear in **Account History**.
-   ![Account History Screenshot](/images/30.jpg)
+### Step 1: Access the Trading Interface
+1. Navigate to the **Trade** tab in the top navigation bar
+2. Select your Trading Account from the dropdown menu in the top-right corner
+   ![Trading Account Selection](/images/18.png)
+
+### Step 2: Configure the Limit Order
+1. Locate the **Orders** panel on the right side
+2. Switch from **Market** to **Limit** on the panel
+   ![Order Type Selection](/images/limit-order-select.png)
+
+3. Set your trading parameters:
+   - **Amount**: The full balance of your selected account will be used
+   - **Limit Price**: Your desired execution price
+   - **Leverage**: Choose your desired leverage multiplier
+   ![Limit Order Parameters](/images/limit-order-details.png)
+
+### Step 3: Place the Order
+1. Click either **Buy** or **Sell** to create your limit order
+
+### Step 4: Monitor Your Order
+- Track your pending orders in the **Details → My Trades** section
+- The order will remain active until either:
+  - It is matched at your specified price
+  - You manually cancel it
+  ![Order Status](/images/limit-order-my-trades.png)
+
+> 📌 You can cancel an open limit order at any time by clicking the **Cancel** button in the My Trades panel.
+
+> ⚠️ **Important**: 
+> - Only full account balance orders are supported
+> - Ensure sufficient collateral is available in your Trading Account
+> - For trading with different amounts, create a new Trading Account via the [Wallet section](#wallet)
 
 ---
 
-## Trading to Funding Transfer
-
-This function returns BTC from Subaccounts to the Funding Account:
-
-1. Access the **Wallet** page.
-2. In the **Trading** section, click the transfer dialog.
-3. In the dialog, choose **Trading to Funding**, select the Subaccount, and click **Transfer**.
-4. The BTC will appear in the Funding account upon successful transfer.
+For wallet-related operations such as account creation and transfers, please refer to the [Wallet Guide](wallet.md).  
 
 ---
 
-For lending at the DEX, please refer to the [Lend to Twilight Pool](https://twilight-pool.vercel.app) guide.
+## Related: The Twilight Settlement Pool
+
+All trades on the Twilight DEX settle against a shared liquidity pool on the Twilight Testnet.  
+This pool is funded by users who lend their SATS (BTC) to earn yield from liquidation fees, trading fees, and funding rates.
+
+If you're interested in becoming a liquidity provider, see the [Lend to Twilight Pool](lend-to-twilight-pool.md) guide for details.
+
+---
