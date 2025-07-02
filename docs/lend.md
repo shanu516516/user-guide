@@ -53,7 +53,7 @@ Click the **Connect Wallet** in the top-right corner of the interface and approv
 
 Follow the steps below to open the [Lend interface](https://frontend.twilight.rest/lend) and execute your lending transaction:
 
-### Step 1: Navigate to the [Lend Interface](https://frontend.twilight.rest/lend)
+### Step 1: Navigate to the Lend Interface
 
 1. Click the **"[Lend](https://frontend.twilight.rest/lend)"** tab in the top navigation bar. This opens the lending dashboard.  
    <img src="/images/lend-dashboard.png" alt="Lend Option" class="enlarge-img-70" />
