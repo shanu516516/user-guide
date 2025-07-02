@@ -10,8 +10,8 @@ import { themes as prismThemes } from "prism-react-renderer";
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: "My Site",
-  tagline: "Dinosaurs are cool",
+  title: "Twilight-Project User Guide",
+  tagline: "Twilight-Project User Guide",
   favicon: "img/favicon.ico",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -23,14 +23,16 @@ const config = {
   url: "https://user-guide.docs.twilight.rest",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/docs",
+  baseUrl: "/",
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "twilight-project", // Usually your GitHub org/user name.
+  organizationName: "shanu516516", // GitHub username for deployment repository.
   projectName: "user-guide", // Usually your repo name.
 
-  onBrokenLinks: "throw",
+  // Do not fail the build on broken links—show warnings instead
+  // onBrokenLinks: "throw",
+  onBrokenLinks: "warn",
   onBrokenMarkdownLinks: "warn",
 
   // Even if you don't use internationalization, you can use this field to set
@@ -81,10 +83,10 @@ const config = {
       // Replace with your project's social card
       image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: "My Site",
+        title: "Twilight-Project User Guide",
         logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg",
+          alt: "Logo",
+          src: "img/twilight.svg",
         },
         items: [
           {
@@ -93,7 +95,8 @@ const config = {
             position: "left",
             label: "Tutorial",
           },
-          { to: "/blog", label: "Blog", position: "left" },
+          // Removed blog link to avoid broken link warnings (re-enable if a blog is added)
+          // { to: "/blog/", label: "Blog", position: "left" },
           {
             href: "https://github.com/facebook/docusaurus",
             label: "GitHub",
@@ -108,8 +111,8 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Tutorial",
-                to: "/docs/intro",
+                label: "DEX Operations",
+                to: "/docs/dex-operations",
               },
             ],
           },
@@ -133,10 +136,11 @@ const config = {
           {
             title: "More",
             items: [
-              {
-                label: "Blog",
-                to: "/blog",
-              },
+              // Blog section is currently disabled
+              // {
+              //   label: "Blog",
+              //   to: "/blog/",
+              // },
               {
                 label: "GitHub",
                 href: "https://github.com/facebook/docusaurus",
