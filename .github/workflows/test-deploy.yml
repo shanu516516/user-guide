@@ -20,4 +20,4 @@ jobs:
         run: npm ci      # or: yarn install --frozen-lockfile
 
       - name: Test build
-        run: npm run build   # yarn build / pnpm run build
+        run: npm run build   # yarn build / pnpm run build 
