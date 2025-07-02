@@ -53,7 +53,7 @@ const config = {
           sidebarPath: "./sidebars.js",
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
-          editUrl: "https://github.com/shanu516516/user-guide/",
+          // editUrl: "https://github.com/shanu516516/edit/user-guide/",
         },
         // blog: {
         //   showReadingTime: true,
@@ -82,12 +82,12 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: "/img/docusaurus-social-card.jpg",
+      image: "/img/twilight.svg",
       navbar: {
-        title: "Twilight-Project User Guide",
+        title: "Twilight",
         logo: {
           alt: "Logo",
-          src: "img/twilight.svg",
+          src: "/img/twilight.svg",
         },
         items: [
           {
@@ -149,7 +149,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} Twilight Finance`,
+        copyright: `Copyright © ${new Date().getFullYear()} Twilight`,
       },
       prism: {
         theme: prismThemes.github,
