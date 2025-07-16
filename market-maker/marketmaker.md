@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Twilight Testnet Market Maker / Liquidity Provider Guide
 
-_Version 1.3 · 16 Jul 2025 · For information purposes only._
+_Version 1.0 · 16 Jul 2025 · For information purposes only._
 
 ---
 
