@@ -170,7 +170,7 @@ Makers receive discounted fees on filled size that meets **all** of the followin
 
 ### 8.2 SDKs & Clients
 
-- **Rust**: `twilight_client_sdk` (async; feature‑gated for signing).
+- **Rust**: [`twilight_client_sdk`](https://github.com/twilight-project/twilight-client-sdk.git) (async; feature‑gated for signing).
 - **TypeScript**: Lightweight client; browser + Node builds.
 - **Rust**: Reference MM bot demonstrating: quote placement using `twilight_client_sdk`
 

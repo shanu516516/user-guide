@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # Twilight Testnet Market Maker / Liquidity Provider Guide
 
-_Version 1.3 · 16 Jul 2025 · For information purposes only; not an offer of securities._
+_Version 1.3 · 16 Jul 2025 · For information purposes only._
 
 ---
 
@@ -21,8 +21,10 @@ Participation is open. Automated quoting / hedging bots are recommended; see onb
 
 **Chain / Execution**
 
-- Cosmos‑SDK chain (Nyks).
-- Bulletproof‑based zero‑knowledge shielding for private orderflow paths.
+- **Cosmos‑SDK chain (Nyks):**
+      > Nyks is a Cosmos-SDK-based blockchain optimized for privacy and BTC-denominated DeFi applications.
+- **Bulletproof-Shielded Transactions:**  
+      > Bulletproofs refer to cryptographic proofs enabling confidential and efficient validation of transactions without revealing specific order details (e.g., size or price) publicly on-chain. Twilight utilizes Bulletproof technology to shield orders, ensuring market participant privacy.
 
 **Instrument**
 
@@ -30,13 +32,13 @@ Participation is open. Automated quoting / hedging bots are recommended; see onb
 
 **Collateral & Settlement**
 
-- **Wrapped BTC (WBTC‑style / IBC asset)** held natively in‑protocol.
+- **Wrapped BTC (WBTC‑style Asset)** On testnet, represented by the SATS token (native Cosmos SDK asset distributed via faucet); in production, SATS will reflect BTC locked on Bitcoin via Twilight’s secure native BTC-to-Nyks bridging mechanism. 
+
 - **All testnet settlement is in‑protocol accounting units** (no L1 BTC UTXO movement per trade during testnet).
 
-**Liquidity Model**
+**Liquidity Pool Model**
 
-> **Capital‑Backed Pooled Margin Engine**\
-> All fills are **gated by available \*\*\***free**\*** pool liquidity** after margin haircuts and utilization thresholds. This is **not an unlimited‑notional vAMM\*\*.
+> Twilight's liquidity model employs a capital-backed pooled margin approach, dynamically aggregating liquidity provider deposits into a unified collateral pool. This pool efficiently backs trader positions, with liquidity availability precisely controlled through margin haircuts and utilization thresholds to robustly manage insolvency risks and ensure consistent market depth.
 
 ---
 
@@ -60,13 +62,13 @@ Twilight testnet tracks four derived pool state variables; desks should monitor 
 
 These are _testnet demonstration_ values; production numbers will change.
 
-| Parameter                      | Value                                | Definition / Measurement                                        | Action When Breached                             | Rationale                                          |     |     |     |     |     |     |     |
-| ------------------------------ | ------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- |
-| **Initial Deposit**            | **0.50 BTC** (wrapped)               | Minimum capital per participating MM to bootstrap pool depth.   | Must post before quoting.                        | Ensure visible depth w/ faucet coins.              |     |     |     |     |     |     |     |
-| **Utilization Cap (**\`\`**)** | **90%**                              | `U = TTM /TVL` Evaluated each block.                            | New opens throttled; MM top‑up SLA clock starts. | Prevents full depletion; leaves withdrawal buffer. |     |     |     |     |     |     |     |
-| **Top‑Up SLA**                 | **≤ 5 min** from breach block time   | Add collateral _or_ reduce exposure to push `U < U_cap`.        | Desk flagged if missed; quotes may be disabled.  | Demonstrates auto‑replenish bots.                  |     |     |     |     |     |     |     |
-|                                |                                      |                                                                 |                                                  |                                                    |     |     |     |     |     |     |     |
-| **Capital Uptime Target**      | **≥99.5%** (best‑effort; metric TBD) | % of time pool reports `U < U_cap` _and_ API heartbeat healthy. | Informational only (v1); scoring later.          | Predictable taker depth.                           |     |     |     |     |     |     |     |
+| Parameter                      | Value                                | Definition / Measurement                                        | Action When Breached                             | Rationale                                          |
+| ------------------------------ | ------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------- |
+| **Initial Deposit**            | **0.50 BTC** (wrapped)               | Minimum capital per participating MM to bootstrap pool depth.   | Must post before quoting.                        | Ensure visible depth w/ faucet coins.              |
+| **Utilization Cap (**\`\`**)** | **90%**                              | `U = TTM /TVL` Evaluated each block.                            | New opens throttled; MM top‑up SLA clock starts. | Prevents full depletion; leaves withdrawal buffer. |
+| **Top‑Up SLA**                 | **≤ 5 min** from breach block time   | Add collateral _or_ reduce exposure to push `U < U_cap`.        | Desk flagged if missed; quotes may be disabled.  | Demonstrates auto‑replenish bots.                  |
+|                                |                                      |                                                                 |                                                  |                                                    |
+| **Capital Uptime Target**      | **≥99.5%** (best‑effort; metric TBD) | % of time pool reports `U < U_cap` _and_ API heartbeat healthy. | Informational only (v1); scoring later.          | Predictable taker depth.                           |
 
 > **Note:** “Capital uptime” telemetry is not enforced in current testnet build; metrics API placeholder only (see §10).
 
@@ -87,24 +89,23 @@ Funding aligns pool mark to external index and rebalances directional inventory 
 
 Let:
 
-- `skew = (long_notional - short_notional) / total_open_notional` (signed, −1→+1).
+- `skew = ((long_notional - short_notional) / total_open_notional)²` (signed, −1→+1).
 - `psy` = funding coefficient (per‑hour scalar; testnet default 1).
 - **Hourly Funding Rate** = `rate =skew/(psy*8)`
 
-**Positive rate ⇒ Longs pay Shorts/Pool.**\
+**Positive rate ⇒ Longs pay Shorts/Pool.**
 **Negative rate ⇒ Shorts pay Longs/Pool.**
 
 Payments are accrued each funding interval (default hourly) and settled in wrapped BTC against trader margin balances; net effect adjusts pool NAV.
-
-> The earlier placeholder quadratic formula has been removed; it was illustrative only and not used in current build.
 
 ### 5.3 Liquidations
 
 - Under‑margined trader positions are liquidated by protocol keepers / external actors.
 
+- If the market price reaches a trader's liquidation price, their positions will be automatically liquidated by protocol keepers.
+
 - **Liquidation proceeds accrue 100% to the pool.**
 
-- If mark price hit the liquidation price then trader positions are liquidated by protocol keeper
 
 ### 5.4 Maker Fee Discount Program (Quote Quality)
 
@@ -120,17 +121,27 @@ Makers receive discounted fees on filled size that meets **all** of the followin
 
 ## 6 | Operational Protections & Risk Controls
 
-| Control                    | Scope           | Current Testnet Behavior                                                                                          | Notes                                                 |     |     |     |     |     |     |     |
-| -------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- |
-| **Isolated Trader Margin** | Trader accounts | Individual positions cannot be topped up _post_ margin breach auto‑liquidation event (isolation once opened).     | Reduces cascading contagion; simplifies PnL.          |     |     |     |     |     |     |     |
-| **Pool Capital Top‑Ups**   | LP deposits     | Permitted anytime; required under Top‑Up SLA after utilization breach.                                            | Distinct from trader margin (no contradiction).       |     |     |     |     |     |     |     |
-|                            |                 |                                                                                                                   |                                                       |     |     |     |     |     |     |     |
-| **Withdrawal Notice**      | LP exits        | 24h notice recommended (not enforced yet) to stage orderly release.                                               | Prevents liquidity cliffs if large LP exits suddenly. |     |     |     |     |     |     |     |
-| **Oracle Integrity**       | Pricing         | Binance mid‑price w/ 0.5s tick in current build; production will migrate to multi‑venue index + confidence bands. | Single‑venue risk acknowledged.                       |     |     |     |     |     |     |     |
+| Control                    | Scope           | Current Testnet Behavior                                                                                          | Notes                                                 |
+| -------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| **Isolated Trader Margin** | Trader accounts | Individual positions cannot be topped up _post_ margin breach auto‑liquidation event (isolation once opened).     | Reduces cascading contagion; simplifies PnL.          |
+| **Pool Capital Top‑Ups**   | LP deposits     | Permitted anytime; required under Top‑Up SLA after utilization breach.                                            | Distinct from trader margin (no contradiction).       |
+|                            |                 |                                                                                                                   |                                                       |
+| **Withdrawal Notice**      | LP exits        | 24h notice recommended (not enforced yet) to stage orderly release.                                               | Prevents liquidity cliffs if large LP exits suddenly. |
+| **Oracle Integrity**       | Pricing         | Binance mid‑price w/ 0.5s tick in current build; production will migrate to multi‑venue index + confidence bands. | Single‑venue risk acknowledged.                       |
 
 ---
 
-##
+## 7 | Risk Disclosure
+
+Participants should consider the following risks:
+
+- **Smart Contract Risks:** Potential vulnerabilities in deployed code.
+- **Liquidity Risk:** Pool liquidity constraints affecting order fulfillment.
+- **Settlement Risks:** Issues in finalizing trades or withdrawals.
+- **Oracle Risks:** Single-source dependency on Binance mid-price (current build).
+- **Liquidation Risks:** Positions risk liquidation due to volatility and margin management.
+- **Technical & Operational Risk:** Risk of downtime and network instability on testnet.
+
 
 ---
 
@@ -151,13 +162,13 @@ Makers receive discounted fees on filled size that meets **all** of the followin
 
 ### 8.2 SDKs & Clients
 
-- **Rust**: `twilight_client_sdk` (async; feature‑gated for signing).
+- **Rust**: [`twilight_client_sdk`](https://github.com/twilight-project/twilight-client-sdk.git) (async; feature‑gated for signing).
 - **TypeScript**: Lightweight client; browser + Node builds.
-- **Rust**: Reference MM bot demonstrating: quote placement using `twilight_client_sdk`
+- **Rust**: Reference MM bot demonstrating: quote placement using [`twilight_client_sdk`](https://github.com/twilight-project/twilight-client-sdk/tree/agent-bot)
 
 ### 8.3 Security & Key Management
 
-- Key Scheme: Uses Curve25519/secp256k1 key pairs for signing operations. Support for HSM/KMS integration via an external signer interface will be added in a future release.&#x20;
+- Key Scheme: secp256k1 is used for transaction signing (Cosmos SDK standard), while Curve25519 underpins the cryptographic operations behind Bulletproofs, such as encrypting/decrypting margin positions. Support for HSM/KMS integration via an external signer interface will be added in a future release.&#x20;
 - Order Confidentiality: Bulletproof-shielded order submission is enabled by default for maximum privacy.&#x20;
 - A user-selectable toggle at the session handshake to disable shielding will be introduced in a subsequent update.&#x20;
 
@@ -167,7 +178,6 @@ Makers receive discounted fees on filled size that meets **all** of the followin
 
 1. **Request Faucet Funds** – [https://frontend.twilight.rest](https://frontend.twilight.rest)
 2. **On-Boardind Guide** - [https://user-guide.docs.twilight.rest/docs](https://user-guide.docs.twilight.rest/docs)
-3. Metrics & Monitoring:
 
 ---
 
@@ -249,9 +259,3 @@ payment = rate * position_notional * (sign)
 # +ve rate: longs pay; -ve: shorts pay.
 ```
 
-|     | Original user draft (vAMM wording). |
-| --- | ----------------------------------- |
-
----
-
-_End of Document_
