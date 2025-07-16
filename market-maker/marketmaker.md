@@ -1,6 +1,11 @@
+---
+title: Market Maker
+sidebar_position: 1
+---
+
 # Twilight Testnet Market Maker / Liquidity Provider Guide
 
-*Version 1.3 · 16 Jul 2025 · For information purposes only; not an offer of securities.*
+_Version 1.3 · 16 Jul 2025 · For information purposes only; not an offer of securities._
 
 ---
 
@@ -21,7 +26,7 @@ Participation is open. Automated quoting / hedging bots are recommended; see onb
 
 **Instrument**
 
-- BTC‑USD *inverse* perpetual (contract notional quoted in USD; PnL / margin tracked in BTC units).
+- BTC‑USD _inverse_ perpetual (contract notional quoted in USD; PnL / margin tracked in BTC units).
 
 **Collateral & Settlement**
 
@@ -31,7 +36,7 @@ Participation is open. Automated quoting / hedging bots are recommended; see onb
 **Liquidity Model**
 
 > **Capital‑Backed Pooled Margin Engine**\
-> All fills are **gated by available *****free***** pool liquidity** after margin haircuts and utilization thresholds.  This is **not an unlimited‑notional vAMM**.
+> All fills are **gated by available \*\*\***free**\*** pool liquidity** after margin haircuts and utilization thresholds. This is **not an unlimited‑notional vAMM\*\*.
 
 ---
 
@@ -53,15 +58,15 @@ Twilight testnet tracks four derived pool state variables; desks should monitor 
 
 ## 4 | Capital Commitment & Guard‑Rails (Testnet Policy)
 
-These are *testnet demonstration* values; production numbers will change.
+These are _testnet demonstration_ values; production numbers will change.
 
-| Parameter                      | Value                                | Definition / Measurement                                        | Action When Breached                             | Rationale                                          |   |   |   |   |   |   |   |
-| ------------------------------ | ------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------- | - | - | - | - | - | - | - |
-| **Initial Deposit**            | **0.50 BTC** (wrapped)               | Minimum capital per participating MM to bootstrap pool depth.   | Must post before quoting.                        | Ensure visible depth w/ faucet coins.              |   |   |   |   |   |   |   |
-| **Utilization Cap (**\`\`**)** | **90%**                              | `U = TTM /TVL` Evaluated each block.                            | New opens throttled; MM top‑up SLA clock starts. | Prevents full depletion; leaves withdrawal buffer. |   |   |   |   |   |   |   |
-| **Top‑Up SLA**                 | **≤ 5 min** from breach block time   | Add collateral *or* reduce exposure to push `U < U_cap`.        | Desk flagged if missed; quotes may be disabled.  | Demonstrates auto‑replenish bots.                  |   |   |   |   |   |   |   |
-|                                |                                      |                                                                 |                                                  |                                                    |   |   |   |   |   |   |   |
-| **Capital Uptime Target**      | **≥99.5%** (best‑effort; metric TBD) | % of time pool reports `U < U_cap` *and* API heartbeat healthy. | Informational only (v1); scoring later.          | Predictable taker depth.                           |   |   |   |   |   |   |   |
+| Parameter                      | Value                                | Definition / Measurement                                        | Action When Breached                             | Rationale                                          |     |     |     |     |     |     |     |
+| ------------------------------ | ------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- |
+| **Initial Deposit**            | **0.50 BTC** (wrapped)               | Minimum capital per participating MM to bootstrap pool depth.   | Must post before quoting.                        | Ensure visible depth w/ faucet coins.              |     |     |     |     |     |     |     |
+| **Utilization Cap (**\`\`**)** | **90%**                              | `U = TTM /TVL` Evaluated each block.                            | New opens throttled; MM top‑up SLA clock starts. | Prevents full depletion; leaves withdrawal buffer. |     |     |     |     |     |     |     |
+| **Top‑Up SLA**                 | **≤ 5 min** from breach block time   | Add collateral _or_ reduce exposure to push `U < U_cap`.        | Desk flagged if missed; quotes may be disabled.  | Demonstrates auto‑replenish bots.                  |     |     |     |     |     |     |     |
+|                                |                                      |                                                                 |                                                  |                                                    |     |     |     |     |     |     |     |
+| **Capital Uptime Target**      | **≥99.5%** (best‑effort; metric TBD) | % of time pool reports `U < U_cap` _and_ API heartbeat healthy. | Informational only (v1); scoring later.          | Predictable taker depth.                           |     |     |     |     |     |     |     |
 
 > **Note:** “Capital uptime” telemetry is not enforced in current testnet build; metrics API placeholder only (see §10).
 
@@ -69,12 +74,12 @@ These are *testnet demonstration* values; production numbers will change.
 
 ## 5 | Economic Flows
 
-All *economic flows close into the pool* (no separate insurance / treasury split in current testnet). Future releases may carve out dedicated insurance tranches.
+All _economic flows close into the pool_ (no separate insurance / treasury split in current testnet). Future releases may carve out dedicated insurance tranches.
 
 ### 5.1 Fee Model
 
 - **Taker Fee:** Standard trade fee (bps) charged on notional; 100% flows to pool NAV.
-- **Maker Fee Discount:** Makers pay a *reduced* fee rate when quotes qualify (see §5.4). There is **no external rebate token**; the discount simply means *less fee is debited* and therefore *more PnL retained* by the maker. All collected fees still accrue to the pool.
+- **Maker Fee Discount:** Makers pay a _reduced_ fee rate when quotes qualify (see §5.4). There is **no external rebate token**; the discount simply means _less fee is debited_ and therefore _more PnL retained_ by the maker. All collected fees still accrue to the pool.
 
 ### 5.2 Funding Transfers
 
@@ -84,7 +89,7 @@ Let:
 
 - `skew = (long_notional - short_notional) / total_open_notional` (signed, −1→+1).
 - `psy` = funding coefficient (per‑hour scalar; testnet default 1).
-- **Hourly Funding Rate** = `rate =skew/(psy*8)` 
+- **Hourly Funding Rate** = `rate =skew/(psy*8)`
 
 **Positive rate ⇒ Longs pay Shorts/Pool.**\
 **Negative rate ⇒ Shorts pay Longs/Pool.**
@@ -103,7 +108,7 @@ Payments are accrued each funding interval (default hourly) and settled in wrapp
 
 ### 5.4 Maker Fee Discount Program (Quote Quality)
 
-Makers receive discounted fees on filled size that meets **all** of the following at the *time of quote entry*:
+Makers receive discounted fees on filled size that meets **all** of the following at the _time of quote entry_:
 
 1. **Inside Spread:** Quote price within ±0.25% of current oracle mid.
 
@@ -111,19 +116,17 @@ Makers receive discounted fees on filled size that meets **all** of the followin
 
 3. **Eligible Sides:** Both bid and ask count independently; one‑sided quoting permitted but only filled eligible orders receive discount.
 
-
-
 ---
 
 ## 6 | Operational Protections & Risk Controls
 
-| Control                    | Scope           | Current Testnet Behavior                                                                                          | Notes                                                 |   |   |   |   |   |   |   |
-| -------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | - | - | - | - | - | - | - |
-| **Isolated Trader Margin** | Trader accounts | Individual positions cannot be topped up *post* margin breach auto‑liquidation event (isolation once opened).     | Reduces cascading contagion; simplifies PnL.          |   |   |   |   |   |   |   |
-| **Pool Capital Top‑Ups**   | LP deposits     | Permitted anytime; required under Top‑Up SLA after utilization breach.                                            | Distinct from trader margin (no contradiction).       |   |   |   |   |   |   |   |
-|                            |                 |                                                                                                                   |                                                       |   |   |   |   |   |   |   |
-| **Withdrawal Notice**      | LP exits        | 24h notice recommended (not enforced yet) to stage orderly release.                                               | Prevents liquidity cliffs if large LP exits suddenly. |   |   |   |   |   |   |   |
-| **Oracle Integrity**       | Pricing         | Binance mid‑price w/ 0.5s tick in current build; production will migrate to multi‑venue index + confidence bands. | Single‑venue risk acknowledged.                       |   |   |   |   |   |   |   |
+| Control                    | Scope           | Current Testnet Behavior                                                                                          | Notes                                                 |     |     |     |     |     |     |     |
+| -------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- | --- | --- | --- | --- | --- | --- | --- |
+| **Isolated Trader Margin** | Trader accounts | Individual positions cannot be topped up _post_ margin breach auto‑liquidation event (isolation once opened).     | Reduces cascading contagion; simplifies PnL.          |     |     |     |     |     |     |     |
+| **Pool Capital Top‑Ups**   | LP deposits     | Permitted anytime; required under Top‑Up SLA after utilization breach.                                            | Distinct from trader margin (no contradiction).       |     |     |     |     |     |     |     |
+|                            |                 |                                                                                                                   |                                                       |     |     |     |     |     |     |     |
+| **Withdrawal Notice**      | LP exits        | 24h notice recommended (not enforced yet) to stage orderly release.                                               | Prevents liquidity cliffs if large LP exits suddenly. |     |     |     |     |     |     |     |
+| **Oracle Integrity**       | Pricing         | Binance mid‑price w/ 0.5s tick in current build; production will migrate to multi‑venue index + confidence bands. | Single‑venue risk acknowledged.                       |     |     |     |     |     |     |     |
 
 ---
 
@@ -144,7 +147,7 @@ Makers receive discounted fees on filled size that meets **all** of the followin
 | Websocket    | WSS                     | Oracle feed, live trades, utilization stream wss\://relayer.twilight.rest/ws       | API key query param        |
 | REST Metrics | HTTPS                   | [https://relayer.twilight.rest/api](https://relayer.twilight.rest/api)             | Public read (rate‑limited) |
 
-**Docs:** See *Twilight API Docs* for schema definitions and example payloads. (Reference: `docs.twilight.rest`).
+**Docs:** See _Twilight API Docs_ for schema definitions and example payloads. (Reference: `docs.twilight.rest`).
 
 ### 8.2 SDKs & Clients
 
@@ -162,11 +165,9 @@ Makers receive discounted fees on filled size that meets **all** of the followin
 
 ## 9 | On‑Boarding Workflow (≈30 min)
 
-
-
 1. **Request Faucet Funds** – [https://frontend.twilight.rest](https://frontend.twilight.rest)
 2. **On-Boardind Guide** - [https://user-guide.docs.twilight.rest/docs](https://user-guide.docs.twilight.rest/docs)
-3. Metrics & Monitoring: 
+3. Metrics & Monitoring:
 
 ---
 
@@ -174,12 +175,12 @@ Makers receive discounted fees on filled size that meets **all** of the followin
 
 > Uptime SLA scoring is **not enforced** in the current testnet; telemetry endpoints exist for experimentation.
 
-| Metric          | Method             | Units | Notes                                            |
-| --------------- | ------------------ | ----- | ------------------------------------------------ |
-| PoolShare price | pool\_share\_value | -     | poolshares in 1 BTC                              |
-| Current Price   | btc\_usd\_price    | USD   |                                                  |
-| Pool Deposits   | lend\_pool\_info   | BTC   | Total Locked Value(total\_locked\_value) in pool |
-| Funding Rate    | get\_funding\_rate | %/hr  | Next interval projection.                        |
+| Metric          | Method           | Units | Notes                                          |
+| --------------- | ---------------- | ----- | ---------------------------------------------- |
+| PoolShare price | pool_share_value | -     | poolshares in 1 BTC                            |
+| Current Price   | btc_usd_price    | USD   |                                                |
+| Pool Deposits   | lend_pool_info   | BTC   | Total Locked Value(total_locked_value) in pool |
+| Funding Rate    | get_funding_rate | %/hr  | Next interval projection.                      |
 
 Sample pull:
 
@@ -189,8 +190,6 @@ curl -sS -X POST https://relayer.twilight.rest/api \
   -H 'Accept: application/json' \
   -d '{"jsonrpc":"2.0","method":"lend_pool_info","params":null,"id":123}' | jq
 ```
-
-
 
 ---
 
@@ -211,8 +210,8 @@ curl -sS -X POST https://relayer.twilight.rest/api \
 
 | Role              | Contact | Notes                        |
 | ----------------- | ------- | ---------------------------- |
-| Programme Lead    | *TBD*   | Coordination, capital ops.   |
-| Technical Support | *TBD*   | API, integration, debugging. |
+| Programme Lead    | _TBD_   | Coordination, capital ops.   |
+| Technical Support | _TBD_   | API, integration, debugging. |
 |                   |         |                              |
 
 ---
@@ -237,6 +236,7 @@ if U >= U_cap:
 ```
 
 ```
+
 ```
 
 ### 13.3 Funding
@@ -249,14 +249,9 @@ payment = rate * position_notional * (sign)
 # +ve rate: longs pay; -ve: shorts pay.
 ```
 
-
-
-
-
-|   | Original user draft (vAMM wording). |
-| - | ----------------------------------- |
+|     | Original user draft (vAMM wording). |
+| --- | ----------------------------------- |
 
 ---
 
-*End of Document*
-
+_End of Document_

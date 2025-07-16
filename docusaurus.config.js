@@ -55,25 +55,23 @@ const config = {
           // Remove this to remove the "edit this page" links.
           // editUrl: "https://github.com/shanu516516/edit/user-guide/",
         },
-        // blog: {
-        //   showReadingTime: true,
-        //   feedOptions: {
-        //     type: ["rss", "atom"],
-        //     xslt: true,
-        //   },
-        //   // Please change this to your repo.
-        //   // Remove this to remove the "edit this page" links.
-        //   editUrl:
-        //     "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
-        //   // Useful options to enforce blogging best practices
-        //   onInlineTags: "warn",
-        //   onInlineAuthors: "warn",
-        //   onUntruncatedBlogPosts: "warn",
-        // },
         blog: false,
         theme: {
           customCss: "./src/css/custom.css",
         },
+      }),
+    ],
+  ],
+
+  // Additional docs plugin instance for the Market Maker section
+  plugins: [
+    [
+      "@docusaurus/plugin-content-docs",
+      /** @type {import('@docusaurus/plugin-content-docs').Options} */ ({
+        id: "marketMaker",
+        path: "market-maker", // Folder containing Market Maker docs
+        routeBasePath: "market-maker", // URL route: /market-maker/*
+        sidebarPath: "./sidebarsMarketMaker.js", // Use dedicated sidebar file
       }),
     ],
   ],
@@ -95,6 +93,13 @@ const config = {
             sidebarId: "tutorialSidebar",
             position: "left",
             label: "Docs",
+          },
+          {
+            type: "docSidebar",
+            sidebarId: "marketMakerSidebar",
+            docsPluginId: "marketMaker",
+            position: "left",
+            label: "Market Maker",
           },
           // Removed blog link to avoid broken link warnings (re-enable if a blog is added)
           // { to: "/blog/", label: "Blog", position: "left" },
