@@ -15,12 +15,12 @@ This guide gives **Market Makers (MMs)/ Liquidity Providers (LPs)** the informat
 
 It consolidates, in one place:
 
-- **Integration & Connectivity:** Endpoints, auth, and data feeds required to monitor the pool and submit orders. (See §8, §9.)
-- **Capital & Guard-Rails:** Minimum deposit, utilization thresholds, and top-up expectations that keep the pool margin-solvent. (See §4.)
-- **Economic Model:** Fees, funding, liquidations, and how all flows accrue to the pooled capital base. (See §5.)
-- **Operational Practices:** Monitoring, withdrawal guidance, and risk considerations for testnet participation. (See §6–§7, §10.)
+- **Integration & Connectivity:** Endpoints, auth, and data feeds required to monitor the pool and submit orders. (See [§8](#8--connectivity--tooling), [§9](#9--on-boarding-workflow-30-min).)
+- **Capital & Guard-Rails:** Minimum deposit, utilization thresholds, and top-up expectations that keep the pool margin-solvent. (See [§4](#4--capital-commitment--guard-rails-testnet-policy).)
+- **Economic Model:** Fees, funding, liquidations, and how all flows accrue to the pooled capital base. (See [§5](#5--economic-flows).)
+- **Operational Practices:** Monitoring, withdrawal guidance, and risk considerations for testnet participation. (See [§6](#6--operational-protections--risk-controls), [§7](#7--risk-disclosure), [§10](#10--metrics--monitoring).)
 
-**Participation is open and permissionless.** You may join as a **passive LP** (deposit SATS collateral and let trader activity drive returns) and/or as an **active trader / maker** (submit *limit orders* that execute against the oracle price; may qualify for fee discounts). Limit orders provide execution control (e.g., "buy if oracle mid ≤ X") but **do not create on-platform price discovery and do not increase pool collateral (TVL)**—only deposits do. See Design Primer below and §3, §5.4.
+**Participation is open and permissionless.** You may join as a **passive LP** (deposit SATS collateral and let trader activity drive returns) and/or as an **active trader / maker** (submit *limit orders* that execute against the oracle price; may qualify for fee discounts). Limit orders provide execution control (e.g., "buy if oracle mid ≤ X") but **do not create on-platform price discovery and do not increase pool collateral (TVL)**—only deposits do. See Design Primer below and [§3](#3--key-liquidity-concepts), [§5.4](#54-maker-fee-discount-program-quote-quality).
 
 :::info Testnet Scope
 All activity described here uses **test assets** (SATS) and **in-protocol accounting only**; no real BTC moves per trade in this environment. Parameters are *demonstration values* and will change prior to production. See §2 for details.
@@ -35,7 +35,7 @@ Twilight’s perp venue is **oracle-priced** and **BTC-collateral only**. All ex
 - **Single-Asset Pool → No Impermanent Loss:** Pool holds BTC (SATS in testnet). There is no x*y=k exposure or paired-asset divergence.
 - **“Limit Orders” Are Oracle Triggers:** We keep familiar limit semantics to reduce integration friction. A buy limit fills when *oracle mid ≤ limit*; a sell when *oracle mid ≥ limit*. Limits do **not** rest in a competitive orderbook and do **not** contribute liquidity depth.
 - **Liquidity = Collateral Availability:** Capacity to absorb trader exposure depends on total deposited BTC `TVL` and real-time utilization `U`, not displayed book size.
-- **Funding = Skew Compensation:** Because mark = oracle spot, funding is repurposed to compensate LPs for **directional inventory imbalances** created by trader flow (penalizes heavy one-sided positioning). See §5.2.
+- **Funding = Skew Compensation:** Because mark = oracle spot, funding is repurposed to compensate LPs for **directional inventory imbalances** created by trader flow (penalizes heavy one-sided positioning). See [§5.2](#52-funding-transfers).
 - **Units:** PnL and margin tracked in SATS (BTC units); trade notional computed in USD: `position_notional = initial_margin × leverage × mark_price_usd`. See §2.
 
 #### Testnet Limits
@@ -51,7 +51,7 @@ Upcoming releases target: (i) multi-venue price index + weightings, (ii) oracle 
 **Chain / Execution**
 
 - **Cosmos-SDK Chain (Nyks):** A Cosmos-SDK blockchain optimized for privacy-preserving, BTC-denominated DeFi applications.
-- **Bulletproof-Shielded Transactions:** Twilight uses Bulletproofs to prove transaction correctness while keeping sensitive order and margin details confidential on-chain. See Security (§8.3) for the key & privacy model.
+- **Bulletproof-Shielded Transactions:** Twilight uses Bulletproofs to prove transaction correctness while keeping sensitive order and margin details confidential on-chain. See Security ([§8.3](#83-security--key-management)) for the key & privacy model.
 
 **Instrument**
 
@@ -70,9 +70,9 @@ Upcoming releases target: (i) multi-venue price index + weightings, (ii) oracle 
 
 Twilight aggregates all LP deposits into a **single BTC collateral pool**. Traders open (levered) BTC-USD inverse perp positions against that pool; required margin is locked in SATS, and the pool is the economic counterparty to trader PnL. There is **no AMM curve and no user-to-user matching**—pool solvency, not displayed depth, is the binding liquidity constraint.
 
-**Capacity Control.** Available capacity is measured by utilization `U = TTM / TVL` (see §3). When utilization approaches the configured cap (`U_cap`), new position opens may be throttled and participating LPs are expected to top up collateral within the Top-Up SLA (see §4).
+**Capacity Control.** Available capacity is measured by utilization `U = TTM / TVL` (see [§3](#3--key-liquidity-concepts)). When utilization approaches the configured cap (`U_cap`), new position opens may be throttled and participating LPs are expected to top up collateral within the Top-Up SLA (see [§4](#4--capital-commitment--guard-rails-testnet-policy).)
 
-**Pool Accounting Flows.** Fees, skew-based funding (inventory compensation), liquidation proceeds, and any configured **haircut reserves** all accrue to or deduct from pool NAV. *Haircut* refers to a safety buffer the protocol (or relayer policy) withholds from “free” liquidity to absorb pending fees, unsettled PnL, or oracle/latency risk. Haircut parameters are **inactive / TBD** in the current testnet. Because the pool is single-asset BTC, *impermanent loss does not apply*; risk is driven by trader PnL volatility and directional skew. See §5 for economic flows.
+**Pool Accounting Flows.** Fees, skew-based funding (inventory compensation), liquidation proceeds, and any configured **haircut reserves** all accrue to or deduct from pool NAV. *Haircut* refers to a safety buffer the protocol (or relayer policy) withholds from “free” liquidity to absorb pending fees, unsettled PnL, or oracle/latency risk. Haircut parameters are **inactive / TBD** in the current testnet. Because the pool is single-asset BTC, *impermanent loss does not apply*; risk is driven by trader PnL volatility and directional skew. See [§5](#5--economic-flows) for economic flows.
 
 ---
 
@@ -110,27 +110,65 @@ These are _testnet demonstration_ values; production numbers will change.
 
 ## 5 | Economic Flows
 
-All _economic flows close into the pool_ (no separate insurance / treasury split in current testnet). Future releases may carve out dedicated insurance tranches.
+All _economic flows close into the pool_ (no separate insurance / treasury split in current testnet). Future releases may carve out dedicated insurance tranches. **Funding in Twilight compensates the pool for directional inventory skew; it does _not_ mark the contract back to spot (pricing is oracle‑sourced).**
 
 ### 5.1 Fee Model
 
 - **Taker Fee:** Standard trade fee (bps) charged on notional; 100% flows to pool NAV.
-- **Maker Fee Discount:** Makers pay a _reduced_ fee rate when quotes qualify (see §5.4). There is **no external rebate token**; the discount simply means _less fee is debited_ and therefore _more PnL retained_ by the maker. All collected fees still accrue to the pool.
+- **Maker Fee Discount:** Makers pay a _reduced_ fee rate when quotes qualify (see [§5.4](#54-maker-fee-discount-program-quote-quality)). There is **no external rebate token**; the discount simply means _less fee is debited_ and therefore _more PnL retained_ by the maker. All collected fees still accrue to the pool.
 
 ### 5.2 Funding Transfers
 
-Funding aligns pool mark to external index and rebalances directional inventory pressure.
+Twilight executes at an external oracle mark; therefore funding is **not** used for mark‑to‑spot convergence. In Twilight, “funding” functions as a **Skew Compensation / Inventory Charge** that (1) discourages large one‑sided positioning and (2) compensates LP capital for warehousing directional risk.
 
-Let:
+#### Interval
+Funding is computed and settled **hourly** (top of the hour; interval length fixed at 1h in testnet).
 
-- `skew = ((long_notional - short_notional) / total_open_notional)²` (signed, −1→+1).
-- `psy` = funding coefficient (per‑hour scalar; testnet default 1).
-- **Hourly Funding Rate** = `rate =skew/(psy*8)`
+#### Inputs (interval‑close snapshot; USD notional)
+- `L_usd` = aggregate long open interest.
+- `S_usd` = aggregate short open interest.
+- `OI_usd = L_usd + S_usd` (if `OI_usd = 0`, funding = 0).
+- **Raw Skew:** `skew_raw = (L_usd - S_usd) / OI_usd`  (range −1 → +1; +ve = long‑heavy; −ve = short‑heavy).
 
-**Positive rate ⇒ Longs pay Shorts/Pool.**
-**Negative rate ⇒ Shorts pay Longs/Pool.**
+#### Quadratic Rate (legacy 8h normalizer)
+Twilight v1 preserves a legacy 8‑hour funding convention scaled to 1h:
+```
+skew_sq   = skew_raw * skew_raw        # 0 → 1
+sign_dir  = sign(skew_raw)             # +1 long‑heavy; −1 short‑heavy; 0 flat
+rate_hr   = (skew_sq / 8) * sign_dir   # decimal/hr; no caps in testnet
+```
+> **No caps:** Current testnet applies no hard ceiling; extreme skew can produce large rates. Monitor telemetry.
 
-Payments are accrued each funding interval (default hourly) and settled in wrapped BTC against trader margin balances; net effect adjusts pool NAV.
+#### Payer / Receiver & Pool Residual
+- If `skew_raw > 0` (long‑heavy): **Long positions pay**, **Short positions receive** at the same absolute rate; any excess collected from longs (because `L_usd > S_usd`) is credited to **pool NAV**.
+- If `skew_raw < 0` (short‑heavy): **Short positions pay**, **Long positions receive**; residual to pool.
+- If `skew_raw = 0`: No funding.
+
+#### Per‑Position Settlement
+For each open position at interval close:
+```
+funding_pos_usd = position_notional_usd * rate_hr   # +credit / -debit from trader POV
+funding_pos_btc = funding_pos_usd / mark_price_usd_close
+apply_to_position_margin(funding_pos_btc)
+```
+After all positions are updated, aggregate payer vs receiver totals; the difference (payer − receiver) is applied to **pool NAV** in BTC (SATS). Rounding dust also remains with the pool.
+
+#### Example
+Snapshot:
+- `L_usd = $10,000,000`
+- `S_usd = $7,000,000`
+- Oracle mark = $60,000/BTC
+- `skew_raw = (10m − 7m) / 17m = 0.17647`
+- `skew_sq = 0.03111`
+- `rate_hr = (0.03111 / 8) * (+1) = 0.003888` (≈38.88 bps)
+
+**Long payer leg:** `$10,000,000 * 0.003888 = $38,880` ⇒ `0.648 BTC`
+  
+**Short receiver leg:** `$7,000,000 * 0.003888 = $27,216` ⇒ `0.4536 BTC`
+  
+**Residual to pool:** `0.648 − 0.4536 = 0.1944 BTC` credited to pool NAV.
+
+_All debits/credits occur in SATS (BTC units). Funding is applied once per interval; it is **not** streamed intra‑interval. Use [Metrics](#10--metrics--monitoring) `get_funding_rate` to monitor projected next‑interval values._
 
 ### 5.3 Liquidations
 
@@ -286,11 +324,12 @@ if U >= U_cap:
 ### 13.3 Funding
 
 ```
-skew = ((long_notional - short_notional) / total_open_notional))^2
-rate = skew/(psy*8)      # per hour
-sign = Long>short ->+ve Short>long ->-ve
-payment = rate * position_notional * (sign)
-# +ve rate: longs pay; -ve: shorts pay.
+skew_raw = (long_notional_usd - short_notional_usd) / total_open_notional_usd    # -1 .. +1
+skew_sq  = skew_raw * skew_raw                                                   # 0 .. 1
+rate_hr  = skew_sq / 8                                                           # decimal/hr (legacy 8h scaler)
+sign_dir = sign(skew_raw)                                                        # +1 long-heavy; -1 short-heavy; 0 flat
+funding_pos = position_notional_usd * rate_hr * sign_dir                         # +credit / -debit (trader POV)
+# Payer side transfers to receiver side; excess collected from payer flows to pool NAV.
 ```
 
 
