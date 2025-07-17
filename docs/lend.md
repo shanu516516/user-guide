@@ -57,37 +57,28 @@ Our Lend/Redeem operation is performed on subaccounts. A few points of interest 
 1. You can create as many subaccounts as you want.
 2. When you lend funds the operation is performed on the complete subaccount, meaning all the funds in that account are now lent. you cannot lend partial amount.
 3. when you redeem the funds are moved back to the same subaccount.
+4. Each subaccount can be used once to perform lend operation.
 
 Follow the steps below to open the [Lend interface](https://frontend.twilight.rest/lend) and execute your lending transaction:
 
 ### Step 1: Create Subaccount and transfer funds
 
 1. First Create a Subaccount, click on the Trading Account button towards the top right of the home page.
-<img src="/images/subaccount.png" alt="Lend Option" class="enlarge-img-70" />
-<img src="/images/newSubaccount.png" alt="Lend Option" class="enlarge-img-70" />
+<img src="/images/subaccount.png" alt="subaccount" class="enlarge-img-70" />
+<img src="/images/newSubaccount.png" alt="newsubaccount" class="enlarge-img-70" />
 
-2. Then go to the [wallet](https://frontend.twilight.rest/wallet) page and move funds from the trading account to the new subaccount (classified as funding accounts).
-<img src="/images/transfer.png" alt="Lend Option" class="enlarge-img-70" />
+2. Then go to the [wallet](https://frontend.twilight.rest/wallet) page and move funds from the funding account to the new subaccount (classified as trading accounts).
+<img src="/images/transfer.png" alt="transfer" class="enlarge-img-70" />
 
 ### Step 2: Navigate to the Lend Interface
 1. Click the **"[Lend](https://frontend.twilight.rest/lend)"** tab in the top navigation bar. This opens the lending dashboard.  
-   <img src="/images/.png" alt="Lend Option" class="enlarge-img-70" />
+   <img src="/images/lendPage.png" alt="Lend page" class="enlarge-img-70" />
 
-2. On the Lend page, click the **"Lend"** button to open a lend form.  
-   <img src="/images/28.jpg" alt="Lend Page" class="enlarge-img-80" />
+2. On the Lend page, towards the right select the subaccount you want to use and click on deposit.  
+<img src="/images/lend.png" alt="Lend" class="enlarge-img-70" />
 
----
-
-### Step 3: Execute the Lending Transaction
-1. On the lending form:
-
-   - Select the Subaccount you wish to lend from using the **"Account From"** dropdown.
-   - Enter the amount of BTC to lend.
-   - Click **"Deposit"** to initiate the transaction.  
-     ![Lend Form](/images/27.jpg)
-
-2. Once confirmed, the lent amount will be displayed under the **"Loan"** section.  
-   <img src="/images/loan.png" alt="Redeem Button" class="enlarge-img" />
+3. Once confirmed, the lent amount will be displayed under the **"Loan"** section.  
+   <img src="/images/redeem.png" alt="Redeem Button" class="enlarge-img" />
 
 > ✅ Your funds are now earning yield in the Twilight Pool.
 
@@ -100,9 +91,9 @@ If you wish to withdraw your lent BTC from the Twilight Pool, follow the steps b
 ### Step 1: Open the Redeem Interface
 
 1. Go to the **Lend** tab from the top navigation bar.
-2. Locate the **"Loan"** section showing your active lending positions.
-3. Click the **"Redeem"** button  
-   <img src="/images/loan.png" alt="Redeem Button" class="enlarge-img" />
+2. Locate the **"Loan"** section at the bottom, showing your active lending positions.
+3. Click the **"WithDraw"** button  
+   <img src="/images/redeem.png" alt="Redeem Button" class="enlarge-img" />
 
 Once confirmed, your BTC will be returned to the same account from which they were lent. The updated balance will be visible on the wallet page.
 
