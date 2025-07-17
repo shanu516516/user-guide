@@ -49,6 +49,9 @@ Click the **Connect Wallet** in the top-right corner of the interface and approv
 
 ---
 
+## Add Funds
+Follow the step by step process on the [testnet faucet](https://frontend.twilight.rest/faucet), to add funds to your wallet.
+
 ## Lend Operation
 
 Follow the steps below to open the [Lend interface](https://frontend.twilight.rest/lend) and execute your lending transaction:
