@@ -31,8 +31,24 @@
 
 /* Resize images placed in Markdown to 50% of the container width */
 .markdown img {
-  width: 30%;
+  width: 50%;
   height: auto;
   display: block; /* center the image horizontally */
   margin: 1rem auto;
+}
+
+/* Override specific images that need to be displayed larger */
+.markdown img.enlarge-img {
+  width: 100% !important; /* override the default 50% width rule */
+}
+/* Override specific images that need to be displayed larger */
+.markdown img.enlarge-img-80 {
+  width: 80% !important; /* override the default 50% width rule */
+}
+/* Override specific images that need to be displayed larger */
+.markdown img.enlarge-img-70 {
+  width: 70% !important; /* override the default 50% width rule */
+}
+.markdown img.enlarge-img-50 {
+  width: 50% !important; /* override the default 50% width rule */
 }

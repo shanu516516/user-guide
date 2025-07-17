@@ -11,23 +11,21 @@ function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <header className={clsx("hero hero--primary", styles.heroBanner)}>
-      <div className="container">
+      {/* <div className="container">
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/dex-operations"
-          >
+          <Link className="button button--secondary button--lg" to="/docs/">
             Start with DEX Operations
           </Link>
         </div>
-      </div>
+      </div> */}
     </header>
   );
 }
+import DocIndexContent from "@site/index.md";
 
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
@@ -36,10 +34,12 @@ export default function Home() {
       title={`Hello from ${siteConfig.title}`}
       description="Description will go into a meta tag in <head />"
     >
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
+      {/* <HomepageHeader /> */}
+
+      <main className="container">
+        <DocIndexContent />
       </main>
+      <main>{/* <HomepageFeatures /> */}</main>
     </Layout>
   );
 }
