@@ -53,21 +53,32 @@ Click the **Connect Wallet** in the top-right corner of the interface and approv
 Follow the step by step process on the [testnet faucet](https://frontend.twilight.rest/faucet), to add funds to your wallet.
 
 ## Lend Operation
+Our Lend/Redeem operation is performed on subaccounts. A few points of interest before we explain the process
+1. You can create as many subaccounts as you want.
+2. When you lend funds the operation is performed on the complete subaccount, meaning all the funds in that account are now lent. you cannot lend partial amount.
+3. when you redeem the funds are moved back to the same subaccount.
 
 Follow the steps below to open the [Lend interface](https://frontend.twilight.rest/lend) and execute your lending transaction:
 
-### Step 1: Navigate to the Lend Interface
+### Step 1: Create Subaccount and transfer funds
 
+1. First Create a Subaccount, click on the Trading Account button towards the top right of the home page.
+<img src="/images/subaccount.png" alt="Lend Option" class="enlarge-img-70" />
+<img src="/images/newSubaccount.png" alt="Lend Option" class="enlarge-img-70" />
+
+2. Then go to the [wallet](https://frontend.twilight.rest/wallet) page and move funds from the trading account to the new subaccount (classified as funding accounts).
+<img src="/images/transfer.png" alt="Lend Option" class="enlarge-img-70" />
+
+### Step 2: Navigate to the Lend Interface
 1. Click the **"[Lend](https://frontend.twilight.rest/lend)"** tab in the top navigation bar. This opens the lending dashboard.  
-   <img src="/images/lend-dashboard.png" alt="Lend Option" class="enlarge-img-70" />
+   <img src="/images/.png" alt="Lend Option" class="enlarge-img-70" />
 
 2. On the Lend page, click the **"Lend"** button to open a lend form.  
    <img src="/images/28.jpg" alt="Lend Page" class="enlarge-img-80" />
 
 ---
 
-### Step 2: Execute the Lending Transaction
-
+### Step 3: Execute the Lending Transaction
 1. On the lending form:
 
    - Select the Subaccount you wish to lend from using the **"Account From"** dropdown.
