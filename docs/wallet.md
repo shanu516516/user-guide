@@ -20,15 +20,8 @@ All operations are executed on the Twilight testnet and can be viewed on the [Tw
 
 ## Prerequisites
 
-Before using the wallet functions:
-
-- Connect your **Keplr** wallet with the [frontend](/docs/add-chain-to-keplr.md).
-- **NYKS Tokens**: Required for transaction fees on the Twilight Testnet
-- **BTC Balance**: Available in your Funding Account
-
-> 💡 New users can:
->
-> - Obtain NYKS and BTC tokens from the [Faucet](https://frontend.twilight.rest/faucet)
+> This guide assumes you already have a Keplr wallet connected to the Twilight testnet and a small balance of **NYKS** (gas) and **SATS** (test BTC balance) available.  
+> If not, follow the step-by-step **[Connect your Keplr](/docs/add-chain-to-keplr.md)** guide and visit the **[Faucet](https://frontend.twilight.rest/faucet)** to obtain test tokens, then return here.
 
 ---
 
@@ -37,7 +30,7 @@ Before using the wallet functions:
 ### 1. Funding Account
 
 - Your public account on the Twilight Testnet chain.
-- Initial BTC/NYKS tokens are received here.
+- Initial NYKS token and BTC balance are received here.
 - Supports transfers to Trading (dark) accounts.
 
 ### 2. Trading Accounts (Dark Accounts)

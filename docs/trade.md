@@ -2,6 +2,9 @@
 title: Trade on Twilight
 sidebar_position: 4
 ---
+:::info No Slippage — Oracle-Priced Execution
+Every trade clears at the external oracle mid price. Order size does not move price; there is no AMM slippage.
+:::
 
 # How to Trade on Twilight
 
@@ -18,15 +21,15 @@ Twilight is a privacy-preserving inverse perpetual protocol that allows users to
 Before trading on the DEX, ensure you have:
 
 - **NYKS Tokens**: Required for transaction fees on the Twilight Testnet
-- **BTC Balance**: Available in your Trading Account (Subaccount) for trading
+- **BTC Balance**: Available in your Trading Account (Subaccount) for trading.
 - **Subaccount**: A dedicated Trading Account for trading operations
 
 > 💡 New users can:
 >
-> - Obtain NYKS tokens and BTC balance from the [Faucet](https://frontend.twilight.rest/faucet)
+> - Claim your testnet tokens from the [Faucet](https://frontend.twilight.rest/faucet): `NYKS` for gas fees and `SATS` to represent your BTC balance.
 > - Set up Trading Accounts using the [Wallet Guide](wallet.md)
 
-> ⚠️ **Note**: Currently, only Testnet trading is supported. All operations are performed on the Twilight Testnet using test tokens.
+> ⚠️ Testnet Notice: You are currently on the Twilight Testnet. All operations use test tokens, which have no real-world value.
 
 ---
 
@@ -46,6 +49,8 @@ You must be connected for Subaccounts, balances, and trading actions to function
 
 ---
 
+
+
 ## Opening a Market Order
 
 ### Step 1: Access the Trading Interface
@@ -55,6 +60,7 @@ You must be connected for Subaccounts, balances, and trading actions to function
    ![Trading Account Selection](/images/18.png)
 
 ### Step 2: Configure Your Order
+_See **[Funding & Liquidation Risk](#funding--liquidation-risk)** before you execute._
 
 1. Locate the **Orders** panel on the right side of the interface
    ![Orders Panel](/images/19.png)
@@ -131,6 +137,7 @@ Limit orders allow you to specify the price at which you want to buy or sell BTC
 
 ### Step 3: Place the Order
 
+_See **[Funding & Liquidation Risk](#funding--liquidation-risk)** before you execute._
 1. Click either **Buy** or **Sell** to create your limit order
 2. If the limit price meets the mark price condition, the order will be immediately filled as a market order.
 
@@ -160,18 +167,30 @@ For wallet-related operations such as account creation and transfers, please ref
 
 Twilight applies a small fee to each trade executed on the Twilight :
 
-- **Maker Fee**: 0.02% — Applied when you add liquidity to the order book (e.g., placing a limit order that is not immediately matched).
-- **Taker Fee**: 0.04% — Applied when you remove liquidity from the order book (e.g., executing a market order or a limit order that is immediately filled).
+- **Maker Fee**: 0.02 % — applied when a limit instruction *does not cross* on entry and later triggers.
+- **Taker Fee**: 0.04 % — applied to market orders or limits that cross immediately.
 
 Fees are deducted automatically from the Trading Account at the time of order execution.
 
 ---
+
+## Funding & Liquidation Risk
+
+Twilight applies **funding** payments to help balance directional skew between long and short positions:
+
+| Mechanism | When Applied | Effect on You |
+|-----------|--------------|---------------|
+| **Hourly Funding** | Top of every hour | Margin is **debited or credited** based on long/short imbalance. |
+| **Liquidation** | When margin ratio ≤ maintenance threshold | Position is closed at the oracle mark. **100 % of posted margin is forfeited.**|
+
+*Manage risk by:*  
+- Choosing conservative leverage.  
 
 ## Related: The Twilight Liquidity Pool
 
 All trades on the Twilight protocol, settle against a liquidity pool on the Twilight Testnet.  
 This pool is funded by users who lend their BTC to earn yield from liquidation, trading fees, and funding fees.
 
-If you're interested in becoming a liquidity provider, see the [Lend to Twilight Pool](/docs/lend) guide for details.
+If you're interested in becoming a liquidity provider, see the [Provide Liquidity to Twilight Pool](/docs/lend) guide for details.
 
 ---
