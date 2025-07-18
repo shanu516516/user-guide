@@ -5,7 +5,7 @@ sidebar_position: 2
 
 # Twilight Testnet Market Maker / Liquidity Provider Guide
 
-_Version 1.4 · 17 Jul 2025 · For information purposes only._
+_Testnet Version 1.0 · 17 Jul 2025 · For information purposes only._
 
 ---
 
@@ -20,7 +20,7 @@ It consolidates, in one place:
 - **Economic Model:** Fees, funding, liquidations, and how all flows accrue to the pooled capital base. (See [§5](#5--economic-flows).)
 - **Operational Practices:** Monitoring, withdrawal guidance, and risk considerations for testnet participation. (See [§6](#6--operational-protections--risk-controls), [§7](#7--risk-disclosure), [§10](#10--metrics--monitoring).)
 
-**Participation is open and permissionless.** You may join as a **passive LP** (deposit SATS collateral and let trader activity drive returns) and/or as an **active trader / maker** (submit *limit orders* that execute against the oracle price; may qualify for fee discounts). Limit orders provide execution control (e.g., "buy if oracle mid ≤ X") but **do not create on-platform price discovery and do not increase pool collateral (TVL)**—only deposits do. See Design Primer below and [§3](#3--key-liquidity-concepts), [§5.4](#54-maker-fee-discount-program-quote-quality).
+**Participation is open and permissionless.** You may join as a **passive LP** (deposit SATS collateral and let trader activity drive returns) and/or as an **active trader / maker** (submit *limit orders* that execute against the oracle price; may qualify for fee discounts). Limit orders provide execution control (e.g., "buy if oracle mid ≤ X") but **do not create on-platform price discovery and do not increase pool collateral (TVL)**—only deposits do. See Design Primer below and [§3](#3--key-liquidity-concepts), [§5.4](#54-maker-fee-discount-program).
 
 :::info Testnet Scope
 All activity described here uses **test assets** (SATS) and **in-protocol accounting only**; no real BTC moves per trade in this environment. Parameters are *demonstration values* and will change prior to production. See §2 for details.
@@ -51,7 +51,7 @@ Upcoming releases target: (i) multi-venue price index + weightings, (ii) oracle 
 **Chain / Execution**
 
 - **Cosmos-SDK Chain (Nyks):** A Cosmos-SDK blockchain optimized for privacy-preserving, BTC-denominated DeFi applications.
-- **Bulletproof-Shielded Transactions:** Twilight uses Bulletproofs to prove transaction correctness while keeping sensitive order and margin details confidential on-chain. See Security ([§8.3](#83-security--key-management)) for the key & privacy model.
+- **Bulletproof-Shielded Transactions:** Twilight uses Bulletproofs to prove transaction correctness while keeping sensitive order and margin details confidential on-chain.
 
 **Instrument**
 
@@ -87,7 +87,6 @@ Twilight testnet tracks four derived pool state variables; desks should monitor 
 | **Free Liquidity**      | `L_free` | `max(TVL - TTM, 0)` after haircuts + pending fees.                    | Available for new position opens & withdrawals. |
 | **Utilization**         | `U`      | `TTM / TVL` (clamped 0→1).                                            | Spread throttle; breach triggers top‑up SLA.    |
 
-**Breach Event:** `U >= U_cap` (see Guard‑Rails).\
 **Net Exposure (Directional):** `Δ = long_notional - short_notional` (in BTC).
 
 ---
@@ -99,12 +98,10 @@ These are _testnet demonstration_ values; production numbers will change.
 | Parameter                      | Value                                | Definition / Measurement                                        | Action When Breached                             | Rationale                                          |
 | ------------------------------ | ------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------ | -------------------------------------------------- |
 | **Initial Deposit**            | **0.50 BTC** (wrapped)               | Minimum capital per participating MM to bootstrap pool depth.   | Must post before quoting.                        | Ensure visible depth w/ faucet coins.              |
-| **Utilization Cap (**\`\`**)** | **90%**                              | `U = TTM /TVL` Evaluated each block.                            | New opens throttled; MM top‑up SLA clock starts. | Prevents full depletion; leaves withdrawal buffer. |
+| **Utilization Cap** | **90%**                              | `U = TTM /TVL` Evaluated each block.                            | New opens throttled; MM top‑up SLA clock starts. | Prevents full depletion; leaves withdrawal buffer. |
 | **Top‑Up SLA**                 | **≤ 5 min** from breach block time   | Add collateral _or_ reduce exposure to push `U < U_cap`.        | Desk flagged if missed; quotes may be disabled.  | Demonstrates auto‑replenish bots.                  |
 |                                |                                      |                                                                 |                                                  |                                                    |
 | **Capital Uptime Target**      | **≥99.5%** (best‑effort; metric TBD) | % of time pool reports `U < U_cap` _and_ API heartbeat healthy. | Informational only (v1); scoring later.          | Predictable taker depth.                           |
-
-> **Note:** “Capital uptime” telemetry is not enforced in current testnet build; metrics API placeholder only (see §10).
 
 ---
 
@@ -115,89 +112,88 @@ All _economic flows close into the pool_ (no separate insurance / treasury split
 ### 5.1 Fee Model
 
 - **Taker Fee:** Standard trade fee (bps) charged on notional; 100% flows to pool NAV.
-- **Maker Fee Discount:** Makers pay a _reduced_ fee rate when quotes qualify (see [§5.4](#54-maker-fee-discount-program-quote-quality)). There is **no external rebate token**; the discount simply means _less fee is debited_ and therefore _more PnL retained_ by the maker. All collected fees still accrue to the pool.
+- **Maker Fee Discount:** Makers pay a _reduced_ fee rate when quotes qualify (see [§5.4](#54-maker-fee-discount-program)). There is **no external rebate token**; the discount simply means _less fee is debited_ and therefore _more PnL retained_ by the maker. All collected fees still accrue to the pool.
 
 ### 5.2 Funding Transfers
 
-Twilight executes at an external oracle mark; therefore funding is **not** used for mark‑to‑spot convergence. In Twilight, “funding” functions as a **Skew Compensation / Inventory Charge** that (1) discourages large one‑sided positioning and (2) compensates LP capital for warehousing directional risk.
+Twilight executes at an external oracle mark; funding is therefore **not** a mark-to-spot mechanism. Instead it is a **Skew Compensation charge** that discourages one-sided positioning and offsets directional risk borne by LP capital.
 
-#### Interval
-Funding is computed and settled **hourly** (top of the hour; interval length fixed at 1h in testnet).
+**Interval:** Computed & settled **hourly** (top of hour; fixed 1h in testnet).  
+**Inputs:** `L_usd` (long OI), `S_usd` (short OI), `OI_usd = L_usd + S_usd`.  
+**Raw Skew:** `skew_raw = (L_usd - S_usd) / OI_usd`  (−1→+1).
 
-#### Inputs (interval‑close snapshot; USD notional)
-- `L_usd` = aggregate long open interest.
-- `S_usd` = aggregate short open interest.
-- `OI_usd = L_usd + S_usd` (if `OI_usd = 0`, funding = 0).
-- **Raw Skew:** `skew_raw = (L_usd - S_usd) / OI_usd`  (range −1 → +1; +ve = long‑heavy; −ve = short‑heavy).
-
-#### Quadratic Rate (legacy 8h normalizer)
-Twilight v1 preserves a legacy 8‑hour funding convention scaled to 1h:
+**Rate (ψ governance scalar; legacy 8h normalizer):**
+```text
+skew_sq   = skew_raw * skew_raw
+sign_dir  = sign(skew_raw)                    # +1 long-heavy; −1 short-heavy
+rate_hr   = (skew_sq / (psi * 8)) * sign_dir  # decimal/hr; ψ=1 testnet; no caps
 ```
-skew_sq   = skew_raw * skew_raw        # 0 → 1
-sign_dir  = sign(skew_raw)             # +1 long‑heavy; −1 short‑heavy; 0 flat
-rate_hr   = (skew_sq / 8) * sign_dir   # decimal/hr; no caps in testnet
-```
-> **No caps:** Current testnet applies no hard ceiling; extreme skew can produce large rates. Monitor telemetry.
+`psi` flattens/steepens the curve (governance‑tunable).
 
-#### Payer / Receiver & Pool Residual
-- If `skew_raw > 0` (long‑heavy): **Long positions pay**, **Short positions receive** at the same absolute rate; any excess collected from longs (because `L_usd > S_usd`) is credited to **pool NAV**.
-- If `skew_raw < 0` (short‑heavy): **Short positions pay**, **Long positions receive**; residual to pool.
-- If `skew_raw = 0`: No funding.
+**Payer / Receiver:** Sign determines payer: long‑heavy ⇒ longs pay / shorts receive; short‑heavy ⇒ shorts pay / longs receive. Because notional sizes differ, residual always flows to Pool NAV (after per‑position application).
 
-#### Per‑Position Settlement
-For each open position at interval close:
-```
-funding_pos_usd = position_notional_usd * rate_hr   # +credit / -debit from trader POV
-funding_pos_btc = funding_pos_usd / mark_price_usd_close
-apply_to_position_margin(funding_pos_btc)
-```
-After all positions are updated, aggregate payer vs receiver totals; the difference (payer − receiver) is applied to **pool NAV** in BTC (SATS). Rounding dust also remains with the pool.
+**Settlement:** Per open position at interval close:  
+`funding_pos_usd = position_notional_usd * rate_hr` → convert at mark → debit/credit margin (SATS). Aggregate payer minus receiver credited (or debited) to Pool NAV. Funding is not streamed intra-interval.
 
-#### Example
-Snapshot:
-- `L_usd = $10,000,000`
-- `S_usd = $7,000,000`
-- Oracle mark = $60,000/BTC
-- `skew_raw = (10m − 7m) / 17m = 0.17647`
-- `skew_sq = 0.03111`
-- `rate_hr = (0.03111 / 8) * (+1) = 0.003888` (≈38.88 bps)
+See Appendix [§13.2](#132-funding-skew-compensation) for the compact formula.
 
-**Long payer leg:** `$10,000,000 * 0.003888 = $38,880` ⇒ `0.648 BTC`
-  
-**Short receiver leg:** `$7,000,000 * 0.003888 = $27,216` ⇒ `0.4536 BTC`
-  
-**Residual to pool:** `0.648 − 0.4536 = 0.1944 BTC` credited to pool NAV.
+### 5.3 Margin & Liquidations
 
-_All debits/credits occur in SATS (BTC units). Funding is applied once per interval; it is **not** streamed intra‑interval. Use [Metrics](#10--metrics--monitoring) `get_funding_rate` to monitor projected next‑interval values._
+**Scope:** How trader margin events impact **LP capital**. Detailed trader / relayer math (IM↔MM formulas, liquidation price derivations) will be published separately in the *Trader & Relayer Risk Math Note*.
 
-### 5.3 Liquidations
+#### Key Facts (Current Testnet)
+- **Isolated Margin:** Margin is locked *per position* at open; **no post-open top-ups**.
+- **Trader-Selected Leverage:** Trader chooses leverage / initial margin; relayer returns the corresponding **maintenance threshold** in the order-accept payload.
+- **Trader May Close Early:** Trader can manually close (settle) any open position before liquidation.
+- **Liquidation Trigger:** When the margin ratio implied by the current oracle price falls to or below the maintenance threshold, the position is **immediately liquidated** (no grace window).
+- **Execution:** **Full close** at current oracle mark (Binance mid in this build).
+- **Economic Outcome:** On liquidation the trader **forfeits 100% of posted margin**. Closing PnL plus seized margin flows to **Pool NAV**. If losses exceed posted margin, the **pool absorbs the deficit**.
 
-- Under‑margined trader positions are liquidated by protocol keepers / external actors.
+#### Liquidation Impact Scenarios (Pool View)
 
-- If the market price reaches a trader's liquidation price, their positions will be automatically liquidated by protocol keepers.
+| Trader Outcome at Liquidation | Margin Seized | Pool Result | Trader Result |
+|---|---|---|---|
+| Position had unrealized **profit** | Yes | Pool pays PnL on close but keeps margin; net impact depends on PnL vs margin. | Loses margin + unrealized profit. |
+| **Loss < margin** | Yes | Pool collects trader loss *and* remaining margin. | Loses more than mark-to-market loss. |
+| **Loss > margin** (blowout) | Yes (insufficient) | Pool absorbs deficit beyond margin. | Margin lost (capped). |
 
-- **Liquidation proceeds accrue 100% to the pool.**
-
-
-### 5.4 Maker Fee Discount Program (Quote Quality)
-
-Makers receive discounted fees on filled size that meets **all** of the following at the _time of quote entry_:
-
-1. **Inside Spread:** Quote price within ±0.25% of current oracle mid.
-
-2. **Resting Latency:** Quote must remain live ≥200ms before cancel/replace to be eligible (anti‑flicker).
-
-3. **Eligible Sides:** Both bid and ask count independently; one‑sided quoting permitted but only filled eligible orders receive discount.
+> Funding and trade fees apply first; table shows directional effect after those adjustments.
 
 ---
+<a id="54-maker-fee-discount-program-quote-quality"></a>
+### 5.4 Maker Fee Discount Program
+
+> **Testnet v1.0:** Maker / Taker fees use a simple order-type schedule—**0.04 % taker** and **0.02 % maker**. A pool-stability-based Maker program will replace this in a future release.
+
+#### Current Testnet Fee Logic
+
+| Fill Type | How Determined | Fee Rate | Notes |
+|---|---|---|---|
+| **Taker** | Market instruction *or* limit that crosses the oracle price on entry (executes immediately). | **0.04%** (4 bps) of filled BTC notional. | Higher fee; 100% flows to pool NAV. |
+| **Maker** | Limit instruction that does **not** cross when submitted and later triggers when oracle reaches your limit. | **0.02%** (2 bps) of filled BTC notional. | Discounted fee; 100% of collected fees still flow to pool NAV. |
+
+**Fee Calculation (BTC):**  
+`fee_btc = fill_size_btc * fee_rate`  
+Fees are debited in **BTC (SATS)** from the account that originated the fill and credited to pool NAV. (If you prefer to work in USD, multiply fill size by execution price to get notional USD; divide by price to reconvert—result is the same BTC debited.)
+
+---
+
+#### Roadmap: Pool‑Stability Maker Program (Preview)
+
+The next testnet release will shift Maker eligibility away from pure order‑type and toward **pool‑stability contribution**, reflecting Twilight’s single‑asset pooled design. Elements under consideration:
+
+- **Capital Residency:** Maintain a minimum BTC collateral balance over rolling windows.
+- **Utilization Responsiveness:** Timely top‑ups or exposure reductions when `U >= U_cap`.
+- **Inventory Absorption:** Add capital or take offsetting flow during high skew / high utilization conditions.
+
+Program details (metrics, thresholds, scoring) will be published ahead of the next cohort. Feedback welcome.
 
 ## 6 | Operational Protections & Risk Controls
 
 | Control                    | Scope           | Current Testnet Behavior                                                                                          | Notes                                                 |
 | -------------------------- | --------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| **Isolated Trader Margin** | Trader accounts | Individual positions cannot be topped up _post_ margin breach auto‑liquidation event (isolation once opened).     | Reduces cascading contagion; simplifies PnL.          |
+| **Isolated Trader Margin** | Trader accounts | Margin is locked per position at open; no post-open top-ups (close/reopen to resize). | Reduces cascading contagion; simplifies PnL.          |
 | **Pool Capital Top‑Ups**   | LP deposits     | Permitted anytime; required under Top‑Up SLA after utilization breach.                                            | Distinct from trader margin (no contradiction).       |
-|                            |                 |                                                                                                                   |                                                       |
 | **Withdrawal Notice**      | LP exits        | 24h notice recommended (not enforced yet) to stage orderly release.                                               | Prevents liquidity cliffs if large LP exits suddenly. |
 | **Oracle Integrity**       | Pricing         | Binance mid‑price w/ 0.5s tick in current build; production will migrate to multi‑venue index + confidence bands. | Single‑venue risk acknowledged.                       |
 
@@ -213,6 +209,7 @@ Participants should consider the following risks:
 - **Oracle Risks:** Single-source dependency on Binance mid-price (current build).
 - **Liquidation Risks:** Positions risk liquidation due to volatility and margin management.
 - **Technical & Operational Risk:** Risk of downtime and network instability on testnet.
+- **Insurance Fund Absence:** Twilight currently has no separate insurance pool; any trader deficits are absorbed directly by pool NAV.
 
 
 ---
@@ -221,35 +218,71 @@ Participants should consider the following risks:
 
 ### 8.1 Endpoints (Testnet)
 
->
-
 | Service      | Transport               | Path Sketch                                                                        | Auth                       |
 | ------------ | ----------------------- | ---------------------------------------------------------------------------------- | -------------------------- |
 | RPC          | JSON‑RPC 2.0 over HTTPS | [https://relayer.twilight.rest/clientapi](https://relayer.twilight.rest/clientapi) | API key header             |
 |              |                         |                                                                                    |                            |
-| Websocket    | WSS                     | Oracle feed, live trades, utilization stream wss\://relayer.twilight.rest/ws       | API key query param        |
+| Websocket    | WSS                     | Oracle feed, live trades, utilization stream wss://relayer.twilight.rest/ws         | API key query param        |
 | REST Metrics | HTTPS                   | [https://relayer.twilight.rest/api](https://relayer.twilight.rest/api)             | Public read (rate‑limited) |
 
-**Docs:** See _Twilight API Docs_ for schema definitions and example payloads. (Reference: `docs.twilight.rest`).
+**Docs:** See **[Twilight API Docs](https://docs.twilight.rest)** for schema definitions and example payloads.
 
 ### 8.2 SDKs & Clients
 
-- **Rust**: [`twilight_client_sdk`](https://github.com/twilight-project/twilight-client-sdk.git) (async; feature‑gated for signing).
-- **TypeScript**: Lightweight client; browser + Node builds.
-- **Rust**: Reference MM bot demonstrating: quote placement using [`twilight_client_sdk`](https://github.com/twilight-project/twilight-client-sdk/tree/agent-bot)
+| Tool | What you can do **today** | Coming in next patch |
+|------|---------------------------|----------------------|
+| **Client SDK (Rust)** | Build / submit / cancel shielded orders, manage private accounts. | Direct Cosmos chain queries · pool-metrics helpers · tagged release. |
+| **Client Wallet (Rust wrapper)** | Generate HD keys, link a Cosmos address, wrap SDK calls. | CLI onboarding flow (fund → deposit → trade → monitor). |
+| **Frontend Web App** | Faucet, deposit SATS, open/close positions, view pool stats — **all via browser, no code.** | Bulk ops · automation hooks. |
 
-### 8.3 Security & Key Management
+> **Need to inspect or automate right now?**  
+> • Use the **Frontend** for manual LP testing.  
+> • Power users can call the raw REST + WS endpoints in [§8.1](#81-endpoints-testnet).  
+> • The SDK / Wallet tagged releases land within days and will unlock full scripting.
 
-- Key Scheme: secp256k1 is used for transaction signing (Cosmos SDK standard), while Curve25519 underpins the cryptographic operations behind Bulletproofs, such as encrypting/decrypting margin positions. Support for HSM/KMS integration via an external signer interface will be added in a future release.&#x20;
-- Order Confidentiality: Bulletproof-shielded order submission is enabled by default for maximum privacy.&#x20;
-- A user-selectable toggle at the session handshake to disable shielding will be introduced in a subsequent update.&#x20;
+_Source repositories: `github:twilight-project/twilight-client-sdk`, `github:twilight-project/nyks-wallet`, frontend source https://github.com/kenny019/twilight-pool._
+
+#### Which Should I Use?
+
+- **Evaluating liquidity / manual participation:** Use the **Frontend Web App**; no code required.
+- **High‑frequency / automated trading or desk integration:** Use the **Client SDK** (pin to a commit) and plan to layer the **Client Wallet** once chain/metrics reads land.
+- **Direct access (power users):** You can always hit the raw **REST + WS endpoints** in [§8.1](#81-endpoints-testnet) from your own infra.
+
+_Installation & build instructions live in the linked repos; we **do not** duplicate code snippets here to avoid drift._
+
+### 8.3 Key Handling & Privacy (Testnet)
+
+All official client tooling ships with an integrated wallet that generates signing keys for you and wraps every order inside an end-to-end-encrypted **shielded transaction**. Shielding hides margin, leverage, and other position specific data on-chain while still proving correctness to validators.
+
+An enterprise signer interface (HSM / KMS) and an optional unshielded mode for ultra-low-latency use-cases are on the near-term roadmap.
 
 ---
 
 ## 9 | On‑Boarding Workflow (≈30 min)
 
-1. **Request Faucet Funds** – [https://frontend.twilight.rest](https://frontend.twilight.rest)
-2. **On-Boardind Guide** - [https://user-guide.docs.twilight.rest/docs](https://user-guide.docs.twilight.rest/docs)
+| Onboarding Path         | Status                           | How-To / Where to Start |
+|------------------------|-----------------------------------|-------------------------|
+| **Frontend Web App**   | **Available Now**                 | [Quick Start](#91-quick-start) |
+| **Programmatic / CLI** | **Imminent (ETA a few days)**     | [CLI/SDK Onboarding](#92-programmatic--cli-imminent) |
+
+---
+
+### 9.1 Quick Start
+
+- **On‑Boarding Guide** – full walkthrough of wallet creation, funding, lending, and trading: https://user-guide.docs.twilight.rest/docs
+- **Request Faucet Funds** – mint test SATS: https://frontend.twilight.rest/faucet/
+
+### 9.2 Programmatic / CLI (Imminent)
+
+- The **Rust Client SDK** already handles shielded order construction, submission, settlement, and cancellation. 
+
+- The companion **Client Wallet** adds Cosmos connectivity and secure HD key management. - 
+
+- Full CLI onboarding 
+              — fund → deposit → trade → monitor —
+  will be published in the next few days alongside tagged releases of both projects.
+
+Release announcements will appear in the GitHub changelogs. Until then, LPs and MMs can explore the pool via the Frontend Quick Start.
 
 ---
 
@@ -257,12 +290,16 @@ Participants should consider the following risks:
 
 > Uptime SLA scoring is **not enforced** in the current testnet; telemetry endpoints exist for experimentation.
 
-| Metric          | Method           | Units | Notes                                          |
-| --------------- | ---------------- | ----- | ---------------------------------------------- |
-| PoolShare price | pool_share_value | -     | poolshares in 1 BTC                            |
-| Current Price   | btc_usd_price    | USD   |                                                |
-| Pool Deposits   | lend_pool_info   | BTC   | Total Locked Value(total_locked_value) in pool |
-| Funding Rate    | get_funding_rate | %/hr  | Next interval projection.                      |
+| Metric          | Method           | Units | Notes                                           |
+| --------------- | ---------------- | ----- | ------------------------------------------------|
+| PoolShare price | pool_share_value | -     | number of poolshares in 1 BTC                   |
+| Current Price   | btc_usd_price    | USD   | Mark price sampled every 0.5 s.
+price                         |
+| Pool Deposits   | lend_pool_info   | BTC   | Total balances locked in the pool (TVL).
+|
+| Funding Rate    | get_funding_rate | %/hr  | Last funding applied.                           |
+
+> _Note:_ The lend pool info endpoint currently returns **TVL** only. Companion fields — **TTM** and real‑time utilisation **U** — will be live  with the next testnet patch and appear automatically in the same payload.
 
 Sample pull:
 
@@ -277,14 +314,12 @@ curl -sS -X POST https://relayer.twilight.rest/api \
 
 ## 11 | Indicative Timeline (Testnet Cohort)
 
-| Milestone               | Target     | Notes                                   |
-| ----------------------- | ---------- | --------------------------------------- |
-| Testnet v1.0.0 Launched | **Day 0**  |                                         |
-| Connectivity check      | **Day 1**  | Confirm RPC / WS streaming.             |
-| KPI dry‑run review      | **Day 5**  | Validate quoting, utilization behavior. |
-| Feedback                | **Day 10** | Collect MM feedback                     |
-| Testnet v1.1.0          | **Day 20** | issues and feedback incorporated        |
-|                         |            |                                         |
+| Milestone | Target Date | What to Expect |
+|-----------|-------------|----------------|
+| **Testnet v1.0 Launch** | **20 Jul 2025** | Public faucet + LP guide live. |
+| **Metrics API update** | **late Jul 2025** | `TTM` & `U` fields added to `/api`. |
+| **SDK + Wallet release** | **early Aug 2025** | CLI onboarding & automation ready. |
+| **v1.1 Bug-fix patch** | **mid Aug 2025** | Incorporates cohort feedback. |
 
 ---
 
@@ -300,37 +335,33 @@ curl -sS -X POST https://relayer.twilight.rest/api \
 
 ## 13 | Appendix – Formal Definitions & Formulas
 
-### 13.1 Pool Accounting
+### 13.1 Pool Accounting (Recap)
 
-```
-D  = Σ active_LP_deposits_btc
-M_enc = Σ margin_locked_for_open_positions_btc
-L_free = max(D - M_enc, 0)
-U = M_enc / D              # if D > 0 else 0
+```text
+TVL    = Σ active_LP_deposits_btc
+TTM    = Σ trader_margin_locked_btc
+L_free = max(TVL - TTM, 0)
+U      = TTM / TVL   # if TVL>0 else 0
 ```
 
-### 13.2 Breach Logic
+### 13.2 Funding (Skew Compensation)
 
+```text
+skew_raw = (L_usd - S_usd) / (L_usd + S_usd)   # -1 .. +1
+rate_hr  = (skew_raw*skew_raw) / (psi * 8)     # unsigned
+rate_hr  = rate_hr * sign(skew_raw)            # apply direction
 ```
+Hourly; per-position application; residual to Pool NAV. See §5.2.
+
+### 13.3 Utilization Breach (Signal)
+
+```text
 if U >= U_cap:
-    emit UtilisationBreach(breach_block_height, U)
+    emit UtilizationBreach(height, U)
     start TopUpSLA_timer
 ```
 
-```
-
-```
-
-### 13.3 Funding
-
-```
-skew_raw = (long_notional_usd - short_notional_usd) / total_open_notional_usd    # -1 .. +1
-skew_sq  = skew_raw * skew_raw                                                   # 0 .. 1
-rate_hr  = skew_sq / 8                                                           # decimal/hr (legacy 8h scaler)
-sign_dir = sign(skew_raw)                                                        # +1 long-heavy; -1 short-heavy; 0 flat
-funding_pos = position_notional_usd * rate_hr * sign_dir                         # +credit / -debit (trader POV)
-# Payer side transfers to receiver side; excess collected from payer flows to pool NAV.
-```
-
+### 13.4 Further Detail
+Trader margin ladders, liquidation price derivations, and parameter functions will be published in the Trader & Relayer Risk Math Note (forthcoming).
 
 
