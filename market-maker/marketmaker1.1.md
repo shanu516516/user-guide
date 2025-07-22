@@ -1,11 +1,11 @@
 ---
-title: Market Maker 1.1
+title: Testnet MM and LP Guide
 sidebar_position: 2
 ---
 
 # Twilight Testnet Market Maker / Liquidity Provider Guide
 
-_Testnet Version 1.0 · 17 Jul 2025 · For information purposes only._
+_Testnet Version 1.0 · 20 Jul 2025 · For information purposes only._
 
 ---
 
@@ -28,7 +28,7 @@ All activity described here uses **test assets** (SATS) and **in-protocol accoun
 ---
 
 :::info Twilight Execution Model – Read This First
-Twilight’s perp venue is **oracle-priced** and **BTC-collateral only**. All executions occur **against the pooled BTC collateral at an external spot reference price**—currently **Binance mid**; a **multi-source weighted index** is in development. There is **no AMM curve, no user-to-user orderbook matching, and no on-platform price discovery**.
+Twilight’s perp Venue is **oracle-priced** and **BTC-collateral only**. All executions occur **against the pooled BTC collateral at an external spot reference price**—currently **Binance mid**; a **multi-source weighted index** is in development. There is **no AMM curve, no user-to-user orderbook matching, and no on-platform price discovery**.
 
 #### Key Implications
 - **No AMM Slippage / Depth Curves:** Trades that pass risk checks clear at the oracle-derived price. Size does not move price; oracle integrity does.
@@ -293,10 +293,8 @@ Release announcements will appear in the GitHub changelogs. Until then, LPs and 
 | Metric          | Method           | Units | Notes                                           |
 | --------------- | ---------------- | ----- | ------------------------------------------------|
 | PoolShare price | pool_share_value | -     | number of poolshares in 1 BTC                   |
-| Current Price   | btc_usd_price    | USD   | Mark price sampled every 0.5 s.
-price                         |
-| Pool Deposits   | lend_pool_info   | BTC   | Total balances locked in the pool (TVL).
-|
+| Current Price   | btc_usd_price    | USD   | Mark price sampled every 0.5 s.                 |
+| Pool Deposits   | lend_pool_info   | BTC   | Total balances locked in the pool (TVL).        |
 | Funding Rate    | get_funding_rate | %/hr  | Last funding applied.                           |
 
 > _Note:_ The lend pool info endpoint currently returns **TVL** only. Companion fields — **TTM** and real‑time utilisation **U** — will be live  with the next testnet patch and appear automatically in the same payload.
@@ -305,9 +303,9 @@ Sample pull:
 
 ```bash
 curl -sS -X POST https://relayer.twilight.rest/api \
-  -H 'Content-Type: application/json' \
-  -H 'Accept: application/json' \
-  -d '{"jsonrpc":"2.0","method":"lend_pool_info","params":null,"id":123}' | jq
+-H 'Content-Type: application/json' \
+-H 'Accept: application/json' \
+-d '{"jsonrpc":"2.0","method":"lend_pool_info","params":null,"id":123}' | jq
 ```
 
 ---
@@ -325,11 +323,9 @@ curl -sS -X POST https://relayer.twilight.rest/api \
 
 ## 12 | Contacts
 
-| Role              | Contact | Notes                        |
-| ----------------- | ------- | ---------------------------- |
-| Programme Lead    | _TBD_   | Coordination, capital ops.   |
-| Technical Support | _TBD_   | API, integration, debugging. |
-|                   |         |                              |
+| Contact Channel | Link                                   | Purpose                                        |
+|-----------------|----------------------------------------|------------------------------------------------|
+| Discord (Community) | https://discord.gg/z5qDWntcDE | Real‑time chat for support and onboarding Q&A |
 
 ---
 
@@ -357,8 +353,8 @@ Hourly; per-position application; residual to Pool NAV. See §5.2.
 
 ```text
 if U >= U_cap:
-    emit UtilizationBreach(height, U)
-    start TopUpSLA_timer
+  emit UtilizationBreach(height, U)
+  start TopUpSLA_timer
 ```
 
 ### 13.4 Further Detail
